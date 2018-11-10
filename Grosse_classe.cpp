@@ -19,7 +19,7 @@ void extract()
 			{ std::cerr << "Erreur d'ouverture du fichier"; }
 		
 		//on ouvre le fichier file_out qui est le fichier d'output
-		std::ofstream file_input(file_out.c_str());
+		std::ofstream file_output(file_out.c_str());
 		if(file_output.fail())
 			{ std::cerr << "Erreur d'ouverture du fichier"; }
 		
