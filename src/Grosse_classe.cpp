@@ -3,7 +3,7 @@
 #include <string>
 #include <fstream>
 
-void extract()
+void reader_writer()
 {
     //on ouvre le fichier file_in qui est un attribut de la Grosse classe
     std::ifstream file_input(file_in.c_str());
@@ -34,8 +34,8 @@ void extract()
                     //on peut commencer a découper la ligne extraite
                     if(chromo_seq.size() != 0)
                     {
-                        //tant qu'on n'est pas à la fin du chromosome
-                        while(seq.getPosition() < chromo_seq.size() )
+                        //tant qu'on n'est pas à la fin du chromosome -> PAULINE JAI MODIFIE LA CONDITION DE FIN DE LECTURE :)
+                        while(seq.getPosition() < (chromo_seq.size()-mat.getSeqLength()) )
 
                             //on extrait une séquence d'une longueur donnée par celle stockée dans la matrice (la fonction extract_seq la stocke dans l'objet Sequence,
                             //initialise la position courant ++1)

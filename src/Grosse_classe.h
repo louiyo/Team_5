@@ -21,6 +21,12 @@ public:
 
     // Commentaire de @William :
     // extract_seq correspond-elle à extract qui est implémentée ? Ou est-ce une autre fonction ?
+    
+    //Commentaire de @Philippine :
+    //pour moi il s'agit de deux fonctions différentes, avec extract_seq qui retourne la séquence de longueur L
+    //à analyser. extract extrait juste un chromosome du fichier, lit et écrit. extract = reader_writer
+    
+    void reader_writer();
 
     /*
      * @brief Ecrit dans le fichier de sortie les infos relatives à une séquence à afficher
@@ -38,6 +44,9 @@ private:
     // Contrairement à ce qui est écrit dans le compte-rendu 2, il ne me semble pas bon d'avoir des attributs
     // Correspondants aux fichiers de input et de output, on se contenterai plutôt de les lire sans les "charger"
     // dans la mémoire
+    
+    //Commentaire de @Philippine :
+    //Je vois plutot ça en mode string file_in, file_out;
 };
 
 #endif
