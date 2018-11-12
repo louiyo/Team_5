@@ -3,6 +3,46 @@
 #include <string>
 #include <fstream>
 
+
+
+//extrait séquence par séqeunce à partir de la séquence chromosique entière
+void extract_seq(std::string chromoseq, int length){
+	
+	Sequence.change_sequence(chromoseq.substr(currentpos_,length)); 
+	currentpos_+=1
+	}
+//AJOUTER UN ATTRIBUT CURRENTPOSITION_			
+
+//ecrit dans le fichier de sortie. le booléen sert a savoir dans quel sens la séquence a un score le plus haut
+void write_seq_for(std::ofstream& output, bool forward=true){
+	
+	if(sortie.is_open()){
+		output<<chromo_name<<"  "<<currentpos_<<" + "<<Sequence.getSequence()<<" "<<Matrice.getScore()<<endl;
+		}
+	}
+
+
+void write_seq_rev(std::ofstream& output, bool forward=true){
+	
+	string reverse("");
+
+	for(int i(Sequence.size()-1);i>=0;--i)
+	{
+		if(seq[i]=='A') {reverse+="T";}
+		if(seq[i]=='T') {reverse+="A";}
+		if(seq[i]=='G') {reverse+="C";}
+		if(seq[i]=='C') {reverse+="G";}
+	}
+	
+	if(sortie.is_open()){
+		output<<chromo_name<<"  "<<currentpos_<<" - "<<reverse<<" "<<Matrice.getScore()<<endl;
+		}
+		
+	}
+
+
+
+
 void reader_writer()
 {
     //on ouvre le fichier file_in qui est un attribut de la Grosse classe
