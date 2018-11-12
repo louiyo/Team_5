@@ -74,7 +74,7 @@ void reader_writer()
             //pour prendre la dernière ligne du fichier
 
             //tant qu'on n'est pas à la fin du chromosome
-            while(seq.getPosition() < chromo_seq.size() )
+            while(seq.getPosition() < (chromo_seq.size()-mat.getSeqLength()) )
 
                 //on extrait une séquence d'une longueur donnée par celle stockée dans la matrice (la fonction extract_seq la stocke dans l'objet Sequence,
                 //initialise la position courant ++1)
