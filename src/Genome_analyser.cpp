@@ -3,7 +3,9 @@
 #include <string>
 #include <fstream>
 
-Genome_analyser::Genome_analser(std::string file_input, std::string matrix_file, double thrs)
+
+//constructeur
+Genome_analyser::Genome_analyser(std::string file_input, std::string matrix_file, double thrs)
 	: current_seq(matrix_file), threshold(thrs), seq_size(current_seq.get_size()), current_pos_in_chr(0), file_in(file_input)
 		
 		{ }
@@ -12,11 +14,10 @@ Genome_analyser::Genome_analser(std::string file_input, std::string matrix_file,
 void extract_seq(std::string chromoseq, int length)
 	{
 	
-	current_seq.set_sequence (chromoseq.substr(current_pos_in_chr,length)); 
-	currentpos_+=1
+		current_seq.set_sequence (chromoseq.substr(current_pos_in_chr,length)); 
+		currentpos_+=1
 	
-	}
-//AJOUTER UN ATTRIBUT CURRENTPOSITION_			
+	}			
 
 //ecrit dans le fichier de sortie. le booléen sert a savoir dans quel sens la séquence a un score le plus haut
 void write_seq_for(std::ofstream& output, bool forward=true){
@@ -39,8 +40,10 @@ void write_seq_rev(std::ofstream& output, bool forward=true){
 		if(seq[i]=='C') {reverse+="G";}
 	}
 	
-	if(sortie.is_open()){
+	if(output.is_open()){
+		
 		output<<chromo_name<<"  "<<currentpos_<<" - "<<reverse<<" "<<Matrice.getScore()<<endl;
+		
 		}
 		
 	}
@@ -53,16 +56,13 @@ void reader(std::string file_in)
     //on ouvre le fichier file_in qui est un attribut de la Grosse classe
     std::ifstream file_input(file_in.c_str());
 
-    //comment gérer le fichier d'output ?
-    /*std::ofstream file_output(file_out.c_str());
-    
-    if(file_output.fail())
-    { std::cerr << "Erreur d'ouverture du fichier"; }*/
+    //se crée tout seul
+    std::ofstream file_output("name_output_file");
 
 
       std::string chromo_name, chromo_seq, line;
 
-        if(!file_input.eof())
+        if(file_input.is_open())
         {
             while(std::getline(file_input, line)) //modifier 
             {
@@ -76,8 +76,10 @@ void reader(std::string file_in)
                     //on peut commencer a découper la ligne extraite
                     if(chromo_seq.size() != 0)
                     {
-                        //tant qu'on n'est pas à la fin du chromosome 
-                        while(current_pos_in_chr < (chromo_seq.size()- seq_size) )
+						if(chromo_seq.size() >= seq_size)
+						{
+                        //tant qu'on n'est pas à la fin du chromosome ATTENTION CAR IL SE PEUT QUIL Y AIT UNE COMPARAISON AVEC UN NB NEGATIF
+                        while(current_pos_in_chr <= (chromo_seq.size()- seq_size) )
 						{
                             //on extrait une séquence d'une longueur donnée (attribut se(la fonction extract_seq la stocke dans l'objet Sequence,
                             //initialise la position courant ++1)
@@ -86,7 +88,7 @@ void reader(std::string file_in)
                         //on regarde si la séquence et ses paramètres peuvent être écrits dans le fichier de sortie
 							if(current_seq.score() > threshold)
 							{
-                            writer(file_output);
+								writer(file_output);
 							}
                         
 							set_sequence(revert_seq());
@@ -96,6 +98,8 @@ void reader(std::string file_in)
 								writer(file_output, false);
 							}
 						}
+						
+						}
 
                     }
 
@@ -103,6 +107,7 @@ void reader(std::string file_in)
                     chromo_name = line;
                     chromo_name.erase(0,1);
                     chromosome_name = chromo_name;
+                    current_pos_in_chr = 0;
 
                     //on remet à 0 la séquence courante de chromosome
                     chromo_seq = "";
@@ -117,9 +122,11 @@ void reader(std::string file_in)
 
             }
             //pour prendre la dernière ligne du fichier
-
-            //tant qu'on n'est pas à la fin du chromosome
-            while(current_pos_in_chr < (chromo_seq.size()- seq_size) )
+			
+			if(chromo_seq.size() >= seq_size)
+			{
+            //tant qu'on n'est pas à la fin du chromosome ATTENTION CAR IL SE PEUT QUIL Y AIT UNE COMPARAISON AVEC UN NB NEGATIF
+            while(current_pos_in_chr <= (chromo_seq.size()- seq_size) )
             
             {
 
@@ -140,6 +147,7 @@ void reader(std::string file_in)
                             writer(file_output, false);
                         }
              }
+			 }
 
 
         }
