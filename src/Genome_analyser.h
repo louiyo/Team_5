@@ -20,6 +20,10 @@ public:
         void reader();
 
 private :
+	
+	string revert_seq(string seq);
+
+
 
     void extract_seq(std::string, int length);
 
@@ -29,7 +33,7 @@ private :
      * @param output (un std::ofstream) : le fichier de sortie dans lequel on écrit
      * @param forward (un bool) indiquant le sens de lecture de la séquence
      */
-    void write_seq(std::ofstream & output, bool forward=true);
+    void writer(std::ofstream & output, bool forward=true);
 	
 	
 	Sequence current_seq; // Type à créer

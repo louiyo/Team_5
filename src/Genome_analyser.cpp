@@ -10,6 +10,24 @@ Genome_analyser::Genome_analyser(std::string file_input, std::string matrix_file
 		
 		{ }
 
+
+string revert_seq(string seq){
+	
+	string reverse;
+	
+	for(int i(seq.size()-1);i>=0;--i)
+	{
+		if(seq[i]=='A') {reverse+="T";}
+		if(seq[i]=='T') {reverse+="A";}
+		if(seq[i]=='G') {reverse+="C";}
+		if(seq[i]=='C') {reverse+="G";}
+	}
+	return reverse;
+	}
+
+
+
+
 //extrait séquence par séqeunce à partir de la séquence chromosique entière
 void extract_seq(std::string chromoseq, int length)
 	{
