@@ -1,14 +1,29 @@
 #include "Sequence.h"
 
 #include <cmath>
+#include <sstream>
+#include <fstream>
 
+//CONSTRUCTEUR
 
-
-
-//CONSTRUCTEUR (Elodie)
-
-Sequence::Sequence();
-
+Sequence::Sequence(const std::string& file)
+	:
+	{
+		std::ifstream myfile(file);
+		std::string line;
+	
+		if ( myfile.is_open() ) {
+			while ( std::getline(myfile,line).good() ) {
+				double valueA, valueC, valueG, valueT;
+				myfile >> valueA >> valueC >> valueG >> valueT;
+				std::array<double, 4> values = {valueA, valueC, valueG, valueT};
+				matrix_.push_back(values);
+			}
+			myfile.close();
+		} /*else {
+			throw(std::runtime_error("MATRIX_FILE")); //A VOIR LORS DE LA GESTION D'ERREUR
+		}*/
+	}
 
 
 //METHODE
@@ -40,13 +55,11 @@ double Sequence::score() const
 }
 
 
-
-
 //GETTERS
 
 int Sequence::get_size() const
 {
-	return sequence_.size();
+	return matrix_.size();
 }
 
 
@@ -54,8 +67,6 @@ std::string Sequence::get_sequence() const
 {
 	return sequence_;
 }
-
-
 
 
 //SETTER
