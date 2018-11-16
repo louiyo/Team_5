@@ -108,7 +108,7 @@ void reader(std::string file_in)
 								writer(file_output);
 							}
                         
-							set_sequence(revert_seq());
+							current_seq.set_sequence(revert_seq());
 
 							if(current_seq.score() > threshold)
 							{
