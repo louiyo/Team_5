@@ -11,7 +11,7 @@ class Sequence {
 	public:
 
 			//CONSTRUCTEUR
-		Sequence(); //Construit la matrice (via appel de fonction)
+		Sequence(const std::string& file); //Construit la matrice
 
 			//METHODE	
 		double score() const; //Calcul du score de la séquence
