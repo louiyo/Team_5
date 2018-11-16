@@ -20,6 +20,10 @@ public:
         void reader();
 
 private :
+	
+	string revert_seq(string seq);
+
+
 
     void extract_seq(std::string, int length);
 
