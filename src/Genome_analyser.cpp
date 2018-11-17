@@ -11,7 +11,7 @@ Genome_analyser::Genome_analyser(std::string file_input, std::string matrix_file
 		{ }
 
 
-string revert_seq(string seq){
+string Genome_analyser::revert_seq(string seq){
 	
 	string reverse;
 	
@@ -29,7 +29,7 @@ string revert_seq(string seq){
 
 
 //extrait séquence par séqeunce à partir de la séquence chromosique entière
-void extract_seq(std::string chromoseq, int length)
+void Genome_analyser::extract_seq(std::string chromoseq, int length)
 	{
 	
 		current_seq.set_sequence (chromoseq.substr(current_pos_in_chr,length)); 
@@ -38,38 +38,20 @@ void extract_seq(std::string chromoseq, int length)
 	}			
 
 //ecrit dans le fichier de sortie. le booléen sert a savoir dans quel sens la séquence a un score le plus haut
-void write_seq_for(std::ofstream& output, bool forward=true){
+void Genome_analyser::writer(std::ofstream& output, bool forward){
 	
-	if(sortie.is_open()){
-		output<<chromo_name<<"  "<<currentpos_<<" + "<<Sequence.getSequence()<<" "<<Matrice.getScore()<<endl;
-		}
-	}
-
-
-void write_seq_rev(std::ofstream& output, bool forward=true){
+	char direction;
+	if (forward) { direction = "+"; }
+	else { direction = "-"; }
 	
-	string reverse("");
-
-	for(int i(Sequence.size()-1);i>=0;--i)
+	if(output.is_open())
 	{
-		if(seq[i]=='A') {reverse+="T";}
-		if(seq[i]=='T') {reverse+="A";}
-		if(seq[i]=='G') {reverse+="C";}
-		if(seq[i]=='C') {reverse+="G";}
+		output<<chromo_name<<"  "<<current_pos_in_chr<<"  " << direction << "  " <<current_Seq.getSequence()<<"  "<<current_seq.score()<<endl;
 	}
 	
-	if(output.is_open()){
-		
-		output<<chromo_name<<"  "<<currentpos_<<" - "<<reverse<<" "<<Matrice.getScore()<<endl;
-		
-		}
-		
 	}
 
-
-
-
-void reader(std::string file_in)
+void Genome_analyser::reader()
 {
     std::ifstream file_input(file_in.c_str());
     std::ofstream file_output("name_output_file");
