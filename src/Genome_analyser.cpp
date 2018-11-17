@@ -68,7 +68,7 @@ void Genome_analyser::reader()
     
     std::string chromo_seq, line, last;
 
-        if(!file.eof())
+        if(!file_input.eof())
         {
             while(std::getline(file_input, line)) 
             {
