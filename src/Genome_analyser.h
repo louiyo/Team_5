@@ -18,8 +18,6 @@ public:
      *  @param
      */
         void reader();
-
-private :
 	
 	string revert_seq(string seq);
 
@@ -34,7 +32,8 @@ private :
      * @param forward (un bool) indiquant le sens de lecture de la séquence
      */
     void writer(std::ofstream & output, bool forward=true);
-	
+
+private :
 	
 	Sequence current_seq; // Type à créer
     double threshold; //Genome_analyser s'occupe de savoir si le score est au dessus du seuil ou non
