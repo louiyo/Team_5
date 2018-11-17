@@ -9,7 +9,8 @@ public:
     /*
      * @brief Constructeur
      */
-    Genome_analyser();
+	Genome_analyser(std::string file_input, std::string matrix_file, double thrs);
+	~Genome_analyser();
 
     /*
      * @brief Extrait séquence par séquence à partir de la séquence chromosomique entière
@@ -21,8 +22,6 @@ public:
 	
 	string revert_seq(string seq);
 
-
-
     void extract_seq(std::string, int length);
 
     /*
@@ -32,17 +31,19 @@ public:
      * @param forward (un bool) indiquant le sens de lecture de la séquence
      */
     void writer(std::ofstream & output, bool forward=true);
+    
+    string get_seq();
 
 private :
 	
 	Sequence current_seq; // Type à créer
     double threshold; //Genome_analyser s'occupe de savoir si le score est au dessus du seuil ou non
-    string chromosome_name;
+    string chromosome_number;
     int seq_size; //longueur de la séquence à couper
     int current_pos_in_chr; //position courante dans la séquence chromosomique
     std::string file_in; //nom du fichier du génôme
 
-    //nom fichier entrée ? string file_in;
+    
 };
 
 #endif

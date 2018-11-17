@@ -9,11 +9,15 @@ Genome_analyser::Genome_analyser(std::string file_input, std::string matrix_file
 	: current_seq(matrix_file), threshold(thrs), seq_size(current_seq.get_size()), current_pos_in_chr(0), file_in(file_input)
 		
 		{ }
+		
+//destructeur
+Genome_analyser::~Genome_analyser()
+	{}
 
 
-string Genome_analyser::revert_seq(string seq){
+string Genome_analyser::revert_seq(string seq){ //void sans paramètres
 	
-	string reverse;
+	string reverse; //string reverse(current_seq.get_sequence();
 	
 	for(int i(seq.size()-1);i>=0;--i)
 	{
@@ -22,10 +26,15 @@ string Genome_analyser::revert_seq(string seq){
 		if(seq[i]=='G') {reverse+="C";}
 		if(seq[i]=='C') {reverse+="G";}
 	}
-	return reverse;
+	return reverse; //current_seq.set_sequence(reverse);
 	}
 
 
+//fonction pour les tests... sinon changer paramètre de retour d'extract seq
+string Genome_analyser::get_seq()
+	{
+		return current_seq.get_seq();
+	}
 
 
 //extrait séquence par séqeunce à partir de la séquence chromosique entière
@@ -46,7 +55,7 @@ void Genome_analyser::writer(std::ofstream& output, bool forward){
 	
 	if(output.is_open())
 	{
-		output<<chromo_name<<"  "<<current_pos_in_chr<<"  " << direction << "  " <<current_Seq.getSequence()<<"  "<<current_seq.score()<<endl;
+		output<< "chr" << chromosome_number<<" "<<current_pos_in_chr<<" " << direction << " " <<current_seq.get_sequence()<<" "<<current_seq.score()<<endl;
 	}
 	
 	}
@@ -64,8 +73,8 @@ void Genome_analyser::reader()
             {
                 if(line[0] == '>')
                 {
-                    chromosome_name = line;
-                    chromosome_name.erase(0,1);
+                    chromosome_number = line;
+                    chromosome_number.erase(0,1);
                     current_pos_in_chr = 0;
                     last = "";
 					
@@ -90,7 +99,7 @@ void Genome_analyser::reader()
 								writer(file_output);
 							}
                         
-							current_seq.set_sequence(revert_seq());
+							current_seq.set_sequence(revert_seq(current_seq.get_sequence())); //revert_seq();
 
 							if(current_seq.score() > threshold)
 							{
