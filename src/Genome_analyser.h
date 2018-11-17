@@ -39,8 +39,8 @@ private :
 	Sequence current_seq; // Type à créer
     double threshold; //Genome_analyser s'occupe de savoir si le score est au dessus du seuil ou non
     string chromosome_number;
-    int seq_size; //longueur de la séquence à couper
-    int current_pos_in_chr; //position courante dans la séquence chromosomique
+    size_t seq_size; //longueur de la séquence à couper
+    size_t current_pos_in_chr; //position courante dans la séquence chromosomique
     std::string file_in; //nom du fichier du génôme
 
     

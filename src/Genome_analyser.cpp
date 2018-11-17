@@ -60,10 +60,11 @@ void Genome_analyser::writer(std::ofstream& output, bool forward){
 	
 	}
 
+//on rajoute la fin de la ligne d'avant à la ligne d'après pour analyser des séquences sur plusieurs lignes
 void Genome_analyser::reader()
 {
     std::ifstream file_input(file_in.c_str());
-    std::ofstream file_output("name_output_file");
+    std::ofstream file_output("output_file.txt");
     
     std::string chromo_seq, line, last;
 
