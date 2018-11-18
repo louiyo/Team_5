@@ -14,7 +14,7 @@ Genome_analyser::~Genome_analyser()
 	{}
 
 
-std::string Genome_analyser::revert_seq(std::string seq){ //void sans paramètres
+std::string Genome_analyser::revert_seq(std::string seq) const{ //void sans paramètres
 	
 	std::string reverse; //string reverse(current_seq.get_sequence();
 	
@@ -41,7 +41,7 @@ void Genome_analyser::extract_seq(std::string chromoseq, int length)
 	{
 	
 		current_seq.set_sequence (chromoseq.substr(current_pos_in_chr,length)); 
-		current_pos_in_chr+=1
+		current_pos_in_chr+=1;
 	
 	}			
 
@@ -49,12 +49,12 @@ void Genome_analyser::extract_seq(std::string chromoseq, int length)
 void Genome_analyser::writer(std::ofstream& output, bool forward) const{
 	
 	char direction;
-	if (forward) { direction = "+"; }
-	else { direction = "-"; }
+	if (forward) { direction = '+'; }
+	else { direction = '-'; }
 	
 	if(output.is_open())
 	{
-		output<< "chr" << chromosome_number<<" "<<current_pos_in_chr<<" " << direction << " " <<current_seq.get_sequence()<<" "<<current_seq.score()<<endl;
+		output<< "chr" << chromosome_number<<" "<<current_pos_in_chr<<" " << direction << " " <<current_seq.get_sequence()<<" "<<current_seq.score()<<std::endl;
 	}
 	
 	}

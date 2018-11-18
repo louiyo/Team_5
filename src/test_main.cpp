@@ -1,5 +1,5 @@
 #include "Genome_analyser.h"
-#include "Sequence.h"
+#include "Sequence.hpp"
 #include <gtest/gtest.h>
 
 using namespace std;
