@@ -3,4 +3,4 @@ project(Team_5)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(Team_5 src/main.cpp src/Grosse_classe.cpp)
+add_executable(Team_5 src/main.cpp src/Genome_analyser.cpp src/Sequence.cpp)

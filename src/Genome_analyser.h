@@ -2,6 +2,7 @@
 #define GENOME_ANALYSER
 
 #include <iostream>
+#include "Sequence.hpp"
 
 class Genome_analyser{
 public:
@@ -20,7 +21,7 @@ public:
      */
         void reader();
 	
-	string revert_seq(string seq);
+	std::string revert_seq(std::string seq);
 
     void extract_seq(std::string, int length);
 
@@ -30,15 +31,15 @@ public:
      * @param output (un std::ofstream) : le fichier de sortie dans lequel on écrit
      * @param forward (un bool) indiquant le sens de lecture de la séquence
      */
-    void writer(std::ofstream & output, bool forward=true);
+    void writer(std::ofstream & output, bool forward=true) const;
     
-    string get_seq();
+    std::string get_seq() const;
 
 private :
 	
 	Sequence current_seq; // Type à créer
     double threshold; //Genome_analyser s'occupe de savoir si le score est au dessus du seuil ou non
-    string chromosome_number;
+    std::string chromosome_number;
     size_t seq_size; //longueur de la séquence à couper
     size_t current_pos_in_chr; //position courante dans la séquence chromosomique
     std::string file_in; //nom du fichier du génôme

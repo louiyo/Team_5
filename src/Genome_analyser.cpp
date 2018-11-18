@@ -1,5 +1,4 @@
 #include "Genome_analyser.h"
-
 #include <string>
 #include <fstream>
 
@@ -15,9 +14,9 @@ Genome_analyser::~Genome_analyser()
 	{}
 
 
-string Genome_analyser::revert_seq(string seq){ //void sans paramètres
+std::string Genome_analyser::revert_seq(std::string seq){ //void sans paramètres
 	
-	string reverse; //string reverse(current_seq.get_sequence();
+	std::string reverse; //string reverse(current_seq.get_sequence();
 	
 	for(int i(seq.size()-1);i>=0;--i)
 	{
@@ -31,9 +30,9 @@ string Genome_analyser::revert_seq(string seq){ //void sans paramètres
 
 
 //fonction pour les tests... sinon changer paramètre de retour d'extract seq
-string Genome_analyser::get_seq()
+std::string Genome_analyser::get_seq() const
 	{
-		return current_seq.get_seq();
+		return current_seq.get_sequence();
 	}
 
 
@@ -42,12 +41,12 @@ void Genome_analyser::extract_seq(std::string chromoseq, int length)
 	{
 	
 		current_seq.set_sequence (chromoseq.substr(current_pos_in_chr,length)); 
-		currentpos_+=1
+		current_pos_in_chr+=1
 	
 	}			
 
 //ecrit dans le fichier de sortie. le booléen sert a savoir dans quel sens la séquence a un score le plus haut
-void Genome_analyser::writer(std::ofstream& output, bool forward){
+void Genome_analyser::writer(std::ofstream& output, bool forward) const{
 	
 	char direction;
 	if (forward) { direction = "+"; }
