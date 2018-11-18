@@ -2,12 +2,14 @@
 #include <string>
 #include <fstream>
 
+using namespace std;
+
 
 //constructeur
 Genome_analyser::Genome_analyser(std::string file_input, std::string matrix_file, double thrs)
 	: current_seq(matrix_file), threshold(thrs), seq_size(current_seq.get_size()), current_pos_in_chr(0), file_in(file_input)
 		
-		{ }
+		{}
 		
 //destructeur
 Genome_analyser::~Genome_analyser()

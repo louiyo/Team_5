@@ -1,8 +1,11 @@
-#ifndef GENOME_ANALYSER
-#define GENOME_ANALYSER
+#ifndef GENOME_ANALYSER_H
+#define GENOME_ANALYSER_H
 
 #include <iostream>
-#include "Sequence.hpp"
+#include "Sequence.h"
+#include "Matrice.h"
+
+using namespace std;
 
 class Genome_analyser{
 public:
@@ -38,11 +41,13 @@ public:
 private :
 	
 	Sequence current_seq; // Type à créer
+	//Matrice matrice;
     double threshold; //Genome_analyser s'occupe de savoir si le score est au dessus du seuil ou non
     std::string chromosome_number;
     size_t seq_size; //longueur de la séquence à couper
     size_t current_pos_in_chr; //position courante dans la séquence chromosomique
     std::string file_in; //nom du fichier du génôme
+    
 
     
 };

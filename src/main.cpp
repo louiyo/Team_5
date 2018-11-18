@@ -1,8 +1,6 @@
 #include <tclap/CmdLine.h>
-
 #include <string>
-
-//#include "Grosse_classe.h"
+#include "Genome_analyser.h"
 
 
 using namespace TCLAP; 
@@ -29,5 +27,8 @@ int main(int argc, char **argv) {
     */
     
 cmd.parse(argc, argv);
+
+Genome_analyser Analyser (argNameofGenome.getValue(), argMatrice.getValue(), argSeuil.getValue());
+Analyser.reader();
  
 }

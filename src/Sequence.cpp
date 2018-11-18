@@ -1,28 +1,18 @@
 #include "Sequence.h"
-
 #include <cmath>
-#include <sstream>
+#include <string>
+#include <iostream>
+#include <sstream> 
 #include <fstream>
+#include <array>
+
+using namespace std;
 
 //CONSTRUCTEUR
 
-Sequence::Sequence(const std::string& file)
-	:
-	{
-		std::ifstream myfile(file);
-		std::string line;
-	
-		if ( myfile.is_open() ) {
-			while ( std::getline(myfile,line).good() ) {
-				double valueA, valueC, valueG, valueT;
-				myfile >> valueA >> valueC >> valueG >> valueT;
-				std::array<double, 4> values = {valueA, valueC, valueG, valueT};
-				matrix_.push_back(values);
-			}
-			myfile.close();
-		} /*else {
-			throw(std::runtime_error("MATRIX_FILE")); //A VOIR LORS DE LA GESTION D'ERREUR
-		}*/
+Sequence::Sequence(const string& file): sequence_("None"), myfilename(file)
+{
+	ConstructMatrix();
 	}
 
 
@@ -47,12 +37,39 @@ double Sequence::score() const
 			case ('T') : res += 2 + log2(matrix_[i][3]);
 						break;
 
-			default : /*throw std::runtime_error("NUCLEOTIDE");*/ break; //A VOIR LORS DE LA GESTION D'ERREUR
+			//default : /*throw std::runtime_error("NUCLEOTIDE");*/ break; //A VOIR LORS DE LA GESTION D'ERREUR
 		}
 	}
 
 	return res;
 }
+
+void Sequence::ConstructMatrix (){
+	cout<<"Je construit matrice avec file "<<myfilename<<endl;
+		ifstream myfile(myfilename);
+		string line;
+		
+		if (myfile.is_open() ) {
+			
+			cout<<"J'ai ouvert fichier"<<endl;
+			 do {
+				
+				double valueA, valueC, valueG, valueT;
+				myfile >> valueA >> valueC >> valueG >> valueT;
+				array <double,4> values {valueA, valueC, valueG, valueT};
+				matrix_.push_back(values);
+			} while ( std::getline(myfile,line).good() );
+			/*for (size_t i(0); i<matrix_.size(); i++){
+				for (size_t j(0); j< matrix_[i].size(); j++){
+					cout<< matrix_[i][j]<<"    ";
+				}
+				cout<<endl;
+			}*/
+			myfile.close();
+		} /*else {
+			throw(std::runtime_error("MATRIX_FILE")); //A VOIR LORS DE LA GESTION D'ERREUR
+		}*/
+	}
 
 
 //GETTERS
