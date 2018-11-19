@@ -13,7 +13,7 @@ using namespace std;
 Sequence::Sequence(const string& file): sequence_("None"), myfilename(file)
 {
 	ConstructMatrix();
-	}
+}
 
 
 //METHODE
@@ -36,6 +36,8 @@ double Sequence::score() const
 
 			case ('T') : res += 2 + log2(matrix_[i][3]);
 						break;
+
+			case ('N') : break;
 
 			//default : /*throw std::runtime_error("NUCLEOTIDE");*/ break; //A VOIR LORS DE LA GESTION D'ERREUR
 		}
