@@ -19,7 +19,8 @@ class Sequence {
 		Sequence(const std::string& file); //Construit la matrice
 
 			//METHODE	
-		double score() const; //Calcul du score de la séquence
+		double score_fow() const; //Calcul du score foward de la séquence
+		double score_rev() const; //Calcul du score reverse de la séquence
 		
 		void ConstructMatrix ();
 

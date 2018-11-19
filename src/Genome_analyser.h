@@ -25,7 +25,7 @@ public:
      */
         void reader();
 	
-	void revert_seq(std::string seq);
+	std::string revert_seq(std::string seq) const;
 
     void extract_seq(std::string, int length);
 
@@ -46,8 +46,9 @@ private :
     double threshold; //Genome_analyser s'occupe de savoir si le score est au dessus du seuil ou non
     std::string chromosome_number;
     size_t seq_size; //longueur de la séquence à couper
-    size_t current_pos_in_chr; //position courante dans la séquence chromosomique
+    size_t current_pos_in_chr = 0; //position courante dans la séquence chromosomique
     std::string file_in; //nom du fichier du génôme
+    size_t current_pos_in_chr_in_line = 0;
     std::multimap <std::string, std::pair <size_t, size_t> > BED_file; //a initialiser avec la fonction red_bed dans le constructeur, normalement les positions seront triées
 
     

@@ -17,12 +17,11 @@ Sequence::Sequence(const string& file): sequence_("None"), myfilename(file)
 
 
 //METHODE
-
-double Sequence::score() const
+double Sequence::score_fow() const
 {
 	double res(0);
-
-	for (size_t i(0) ; i < sequence_.size() ; ++i)
+	size_t sequence_size = sequence_.size();
+	for (size_t i(0) ; i < sequence_size ; ++i)
 	{
 		switch(sequence_[i]) {
 			case ('A') : res += 2 + log2(matrix_[i][0]);
@@ -37,7 +36,33 @@ double Sequence::score() const
 			case ('T') : res += 2 + log2(matrix_[i][3]);
 						break;
 
-			case ('N') : break;
+			//default : /*throw std::runtime_error("NUCLEOTIDE");*/ break; //A VOIR LORS DE LA GESTION D'ERREUR
+		}
+	}
+
+	return res;
+}
+
+
+double Sequence::score_rev() const
+{
+	double res(0);
+	size_t matrice_size = sequence_.size() - 1;
+	size_t sequence_size = matrice_size + 1;
+	for (size_t i(0) ; i < sequence_size ; ++i)
+	{
+		switch(sequence_[i]) {
+			case ('A') : res += 2 + log2(matrix_[matrice_size - i][3]);
+						break;
+
+			case ('C') : res += 2 + log2(matrix_[matrice_size - i][2]);
+						break;
+
+			case ('G') : res += 2 + log2(matrix_[matrice_size - i][1]);
+						break;
+
+			case ('T') : res += 2 + log2(matrix_[matrice_size - i][0]);
+						break;
 
 			//default : /*throw std::runtime_error("NUCLEOTIDE");*/ break; //A VOIR LORS DE LA GESTION D'ERREUR
 		}
