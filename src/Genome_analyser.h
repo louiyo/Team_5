@@ -24,7 +24,7 @@ public:
      */
         void reader();
 	
-	std::string revert_seq(std::string seq) const;
+	void revert_seq(std::string seq);
 
     void extract_seq(std::string, int length);
 

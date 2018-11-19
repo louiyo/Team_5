@@ -16,18 +16,18 @@ Genome_analyser::~Genome_analyser()
 	{}
 
 
-std::string Genome_analyser::revert_seq(std::string seq) const{ //void sans paramètres
+void Genome_analyser::revert_seq(std::string seq) { //void sans paramètres
 	
-	std::string reverse; //string reverse(current_seq.get_sequence();
+	std::string reverse; 
 	
-	for(int i(seq.size()-1);i>=0;--i)
+	for(int i(current_seq.size()-1);i>=0;--i)
 	{
-		if(seq[i]=='A') {reverse+="T";}
-		if(seq[i]=='T') {reverse+="A";}
-		if(seq[i]=='G') {reverse+="C";}
-		if(seq[i]=='C') {reverse+="G";}
+		if(current_seq[i]=='A') {reverse+="T";}
+		if(current_seq[i]=='T') {reverse+="A";}
+		if(current_seq[i]=='G') {reverse+="C";}
+		if(current_seq[i]=='C') {reverse+="G";}
 	}
-	return reverse; //current_seq.set_sequence(reverse);
+	current_seq.set_sequence(reverse); 
 	}
 
 
