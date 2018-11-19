@@ -3,7 +3,8 @@
 
 #include <iostream>
 #include "Sequence.h"
-#include "Matrice.h"
+#include <map>
+#include <utility>
 
 using namespace std;
 
@@ -47,7 +48,7 @@ private :
     size_t seq_size; //longueur de la séquence à couper
     size_t current_pos_in_chr; //position courante dans la séquence chromosomique
     std::string file_in; //nom du fichier du génôme
-    
+    std::multimap <std::string, std::pair <size_t, size_t> > BED_file; //a initialiser avec la fonction red_bed dans le constructeur, normalement les positions seront triées
 
     
 };
