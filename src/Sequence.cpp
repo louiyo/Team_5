@@ -45,31 +45,28 @@ double Sequence::score() const
 }
 
 void Sequence::ConstructMatrix (){
-	cout<<"Je construit matrice avec file "<<myfilename<<endl;
+	//cout<<"Je construit matrice avec file "<<myfilename<<endl;
 		ifstream myfile(myfilename);
 		string line;
 		
 		if (myfile.is_open() ) {
-			
-			cout<<"J'ai ouvert fichier"<<endl;
-			 do {
-				
-				double valueA, valueC, valueG, valueT;
-				myfile >> valueA >> valueC >> valueG >> valueT;
+			double valueA, valueC, valueG, valueT;
+			//cout<<"J'ai ouvert fichier"<<endl;
+			  while ( myfile >> valueA >> valueC >> valueG >> valueT){
 				array <double,4> values {valueA, valueC, valueG, valueT};
 				matrix_.push_back(values);
-			} while ( std::getline(myfile,line).good() );
-			/*for (size_t i(0); i<matrix_.size(); i++){
+			}
+			for (size_t i(0); i<matrix_.size(); i++){
 				for (size_t j(0); j< matrix_[i].size(); j++){
-					cout<< matrix_[i][j]<<"    ";
-				}
-				cout<<endl;
-			}*/
+					cout<< matrix_[i][j] <<"   ";
+				} cout<<endl;
+			}
 			myfile.close();
 		} /*else {
 			throw(std::runtime_error("MATRIX_FILE")); //A VOIR LORS DE LA GESTION D'ERREUR
 		}*/
 	}
+
 
 
 //GETTERS
