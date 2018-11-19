@@ -56,7 +56,7 @@ void Genome_analyser::writer(std::ofstream& output, bool forward) const{
 	
 	if(output.is_open())
 	{
-		output<< "chr" << chromosome_number<<" "<<current_pos_in_chr<<" " << direction << " " <<current_seq.get_sequence()<<" "<<current_seq.score()<<std::endl;
+		output<<chromosome_number<<" "<<current_pos_in_chr<<" " << direction << " " <<current_seq.get_sequence()<<" "<<current_seq.score()<<std::endl;
 	}
 	
 	}
