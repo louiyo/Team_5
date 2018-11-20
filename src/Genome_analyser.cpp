@@ -64,7 +64,7 @@ void Genome_analyser::writer(std::ofstream& output, bool forward) const{
 
 }
 
-
+//pas encore fonctionnelle
 void Genome_analyser::reader() {
 
     std::ifstream file_input(file_in.c_str());
@@ -117,4 +117,91 @@ void Genome_analyser::reader() {
         //on ferme les fichiers
         file_input.close();
         file_output.close();
+}
+
+void Genome_analyser::read_genome(std::string output_file)
+{
+    std::ifstream genome_input(genome_in.c_str());
+    std::ofstream file_output("DBP.mat");
+    
+    std::string line, seq;
+    //get char from a file
+    char c;
+    bool in_chromo(false);
+    size_t pos_inf(0);
+    size_t pos_sup(0);
+    int chrom_nbr(0);
+    int start_seq(0);
+    
+    //goes through positions multimap
+    multimap<size_t, size_t>::iterator it(positions.begin());
+    
+    //while it isn't at the end of positions
+    while(it != positions.end())
+    {
+		//return range of all iterators with same key = all the different position ranges on the same chromosome 
+		pair <std::multimap<std::string, std::pair <size_t, size_t> >::iterator, std::multimap<std::string, std::pair <size_t, size_t> >::iterator> range(positions.equal_range(it.first));
+		
+		//reinitializes it
+		it = range.second;
+		
+		//goes through different position ranges
+		for(std::multimap<std::string, std::pair <size_t, size_t> >::iterator ref=range.begin(); ref!=range.second; ++ref)
+			{
+				//store boundaries of extracted seq and chromosome number
+				//CHECK IF WORKS WELL
+				pos_inf = ref.second.first;
+				pos_sup = ref.second.second;
+				chrom_nbr = ref.first;
+				
+				
+				while(!genome_input.eof())
+				
+				{
+					//get line of file
+					std::getline(genome_input, line);
+					
+					//if we are in the chromosome of interest
+					if(in_chromo)
+					{
+						//extract sequence of interest char per char
+						//WHAT HAPPENS IF CHAR = ENDL ??? WHAT HAPPENS IF SPACE OR TAB ?
+						genome_input.seekg(start_seq + pos_inf);
+						
+						for(size_t i(pos_inf); i < pos_sup, ++i)
+							{ seq += genome_input.get(c); }
+						
+						//add to matrix
+						current_seq.set_seq(seq),
+						current_seq.add_points_to_matrix();
+					}
+				
+						
+					//if line with chromosome nbr
+					if( line[0] == '>')
+					{
+						//right chromo
+						if(line.compare('>chr' + chrom_nbr) == 0)
+						{
+							in_chromo = true;
+						
+							//set start_seq index CAN I DO IT ???
+							//CHECK
+							start_seq = (genome_input.tellg() + 1);
+						}
+						
+						//if we're not
+						else
+						{ in_chromo = false; }
+					
+					}
+					
+					
+					
+				} 
+			}
+            
+           write_matrix();     
+				
+               
 }

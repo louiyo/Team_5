@@ -34,6 +34,8 @@ public:
      * @brief Extrait séquence par séquence à partir de la séquence chromosomique entière
      */
     void reader ();
+    
+    void read_genome  (); // donnez lui le nom que vous voulez
 
     /*
      * @brief génère la séquence de nucléotides complémentaire à une séquence donnée
