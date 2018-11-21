@@ -80,7 +80,7 @@ private :
     size_t seq_size; //longueur de la séquence à couper
 
     std::string positions_file;
-    std::multimap <std::string, std::pair <size_t, size_t> > positions;
+    std::multimap <size_t, std::pair <size_t, size_t> > positions;
     int nb_of_sequences_to_analyze;
 };
 

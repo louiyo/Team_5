@@ -134,25 +134,24 @@ void Genome_analyser::read_genome(std::string output_file)
     int start_seq(0);
     
     //goes through positions multimap
-    multimap<size_t, size_t>::iterator it(positions.begin());
+    std::multimap<size_t, std::pair <size_t, size_t> >::iterator it(positions.begin());
     
     //while it isn't at the end of positions
     while(it != positions.end())
     {
 		//return range of all iterators with same key = all the different position ranges on the same chromosome 
-		pair <std::multimap<std::string, std::pair <size_t, size_t> >::iterator, std::multimap<std::string, std::pair <size_t, size_t> >::iterator> range(positions.equal_range(it.first));
+		std::pair <std::multimap<size_t, std::pair <size_t, size_t> >::iterator, std::multimap<size_t, std::pair <size_t, size_t> >::iterator> range(positions.equal_range(it->first));
 		
 		//reinitializes it
 		it = range.second;
 		
 		//goes through different position ranges
-		for(std::multimap<std::string, std::pair <size_t, size_t> >::iterator ref=range.begin(); ref!=range.second; ++ref)
+		for(std::multimap<size_t, std::pair <size_t, size_t> >::iterator ref=range.begin(); ref!=range.second; ++ref)
 			{
 				//store boundaries of extracted seq and chromosome number
-				//CHECK IF WORKS WELL
-				pos_inf = ref.second.first;
-				pos_sup = ref.second.second;
-				chrom_nbr = ref.first;
+				pos_inf = ref->second.first;
+				pos_sup = ref->second.second;
+				chrom_nbr = std::to_string(ref->first);
 				
 				
 				while(!genome_input.eof())
@@ -165,11 +164,13 @@ void Genome_analyser::read_genome(std::string output_file)
 					if(in_chromo)
 					{
 						//extract sequence of interest char per char
-						//WHAT HAPPENS IF CHAR = ENDL ??? WHAT HAPPENS IF SPACE OR TAB ?
-						genome_input.seekg(start_seq + pos_inf);
+						genome_input.seekg(start_seq);
 						
 						for(size_t i(pos_inf); i < pos_sup, ++i)
-							{ seq += genome_input.get(c); }
+							{ 
+								genome_input.get(c);
+								seq += c; 
+							}
 						
 						//add to matrix
 						current_seq.set_seq(seq),
@@ -185,9 +186,9 @@ void Genome_analyser::read_genome(std::string output_file)
 						{
 							in_chromo = true;
 						
-							//set start_seq index CAN I DO IT ???
-							//CHECK
-							start_seq = (genome_input.tellg() + 1);
+							//set start_seq index
+							start_seq = (genome_input.tellg());
+							start_seq += pos_inf;
 						}
 						
 						//if we're not
