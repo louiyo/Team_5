@@ -61,6 +61,9 @@ public:
      * @param newSeq (un std::string) : la nouvelle séquence de nucléotides
      */
     void set_sequence(std::string newSeq);
+    
+    //Retourne la matrice (utile que pour test sequence) :
+    vector< array<double,4>> get_matrix() const;
 
 
 private:

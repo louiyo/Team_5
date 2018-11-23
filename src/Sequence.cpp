@@ -115,3 +115,7 @@ std::string Sequence::get_sequence() const {
 void Sequence::set_sequence(std::string newSeq) {
 	sequence_ = newSeq;
 }
+
+vector< array<double,4>> Sequence::get_matrix() const {
+	return matrix_;
+}
