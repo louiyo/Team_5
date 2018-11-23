@@ -206,3 +206,23 @@ void Genome_analyser::read_genome(std::string output_file)
 				
                
 }
+
+
+void Genome_analyser::read_positions_file () {
+	
+	std::ifstream myfile(positions_file);
+	std::string line;
+	
+	if ( myfile.is_open() ) {
+		while ( std::getline(myfile,line).good() ) {
+			std::string chrom;
+			std::size_t start, end;
+			myfile >> chrom >> start >> end; //récupère un string et 2 size_t du fichier.
+			chrom.erase(0,3); //enlève les lettres "chr".
+			std::size_t chrom_num = stoul(chrom); //convertit en unsigned long (size_t).
+		}
+		myfile.close();
+	} /*else {
+		throw(std::runtime_error("BED_FILE")); //A VOIR LORS DE LA GESTION D'ERREUR
+	}*/
+}

@@ -36,6 +36,8 @@ public:
     void reader ();
     
     void read_genome  (); // donnez lui le nom que vous voulez
+    void read_positions_file (); //A VOIR COMMENT ON S'ORGANISE, POUR LE MOMENT CETTE FONCTION EXTRAIT SEULEMENT LES INFOS DU FICHIER.
+						  //IL FAUT PAR LA SUITE REMPLIR LA MULTIMAP AVEC CES INFOS.
 
     /*
      * @brief génère la séquence de nucléotides complémentaire à une séquence donnée
