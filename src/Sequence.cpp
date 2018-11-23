@@ -14,11 +14,18 @@ Sequence::Sequence(const string& file): sequence_("None"), myfilename(file) {
 
 
 Sequence::Sequence (const size_t & matrix_size)
-: matrix_( vector<array <double,4>, double> (matrix_size , 0.25))
-{}
+{
+	vector<array <double,4>> newMat(matrix_size,{0.25,0.25,0.25,0.25});
+	matrix_ = newMat;
+}
 
 
 double Sequence::score_fow() const {
+
+	if(matrix_.size() != sequence_.size()){
+	 	/*throw std::runtime_error("MATRIXSIZE");*/
+	 	return 0;
+	}
 
 	double res(0);
 	size_t sequence_size = sequence_.size();
@@ -37,7 +44,7 @@ double Sequence::score_fow() const {
 			case ('T') : res += 2 + log2(matrix_[i][3]);
 						break;
 
-			//default : /*throw std::runtime_error("NUCLEOTIDE");*/ break; //A VOIR LORS DE LA GESTION D'ERREUR
+			default : /*throw std::runtime_error("NUCLEOTIDE");*/ break; //A VOIR LORS DE LA GESTION D'ERREUR
 		}
 	}
 
@@ -65,7 +72,8 @@ double Sequence::score_rev() const {
 			case ('T') : res += 2 + log2(matrix_[matrice_size - i][0]);
 						break;
 
-			//default : /*throw std::runtime_error("NUCLEOTIDE");*/ break; //A VOIR LORS DE LA GESTION D'ERREUR
+			case ('N') : break;
+			default : /*throw std::runtime_error("NUCLEOTIDE");*/ break; //A VOIR LORS DE LA GESTION D'ERREUR
 		}
 	}
 
@@ -81,7 +89,6 @@ void Sequence::ConstructMatrix (){
     if (myfile.is_open() ) {
 
         double valueA, valueC, valueG, valueT;
-
         while ( myfile >> valueA >> valueC >> valueG >> valueT){
 
             array <double,4> values {valueA, valueC, valueG, valueT};

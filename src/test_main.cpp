@@ -1,5 +1,5 @@
 #include "Genome_analyser.h"
-#include "Sequence.hpp"
+#include "Sequence.h"
 #include <gtest/gtest.h>
 
 using namespace std;
@@ -38,4 +38,30 @@ TEST(SequenceTest, matrix_construction)
 			EXPECT_EQ(seq.get_matrix()[i][j], matrix_test[i][j]);
 		}
 	}
+}
+
+TEST(test_score, calcul)
+{
+	Sequence seq("DBP.mat");
+
+	seq.set_sequence("ATGCTCC");
+	double score = seq.score_fow();
+	EXPECT_NEAR(score, -16.4759996073, 0.0000000002)
+	
+	seq.set_sequence("AAAAAAA");
+	double score = seq.score_fow();
+	EXPECT_NEAR(score, -5.10229832163, 0.0000000002);
+
+	seq.set_sequence("NNNNNNN");
+	EXPECT_EQ(seq.score_fow(),0);
+
+	seq.set_sequence("");
+	EXPECT_EQ(seq.score_fow(),0);
+
+
+}
+
+int main(int argc, char **argv) {
+    ::testing::InitGoogleTest(&argc, argv);
+    return RUN_ALL_TESTS();
 }
