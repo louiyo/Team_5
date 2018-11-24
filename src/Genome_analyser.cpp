@@ -118,6 +118,29 @@ void Genome_analyser::reader() {
         file_output.close();
 }
 
+void Genome_analyser::cut_positions(const Range& range, std::string& seq, std::ifstream& genome_input, size_t pos_0, std::string nbr)
+{
+	//goes through different positions in chromosome
+	for(Positions::iterator ref=range.first; ref!=range.second; ++ref)
+	{
+		char c;
+		//extract sequence of interest char per char
+		size_t start_seq(pos_0 + ref->second.first);
+		genome_input.seekg(start_seq);
+		for(size_t i(ref->second.first); i < ref->second.second; ++i)
+			{
+				genome_input.get(c);
+				if(c != '\n')
+					{seq += c;} 
+			}
+		
+		//print
+		std::cout << "chr" << " " << nbr << " " << seq << std::endl;
+		seq = "";
+	}
+	
+}
+
 void Genome_analyser::read_genome()
 {
     std::ifstream genome_input(genome_in.c_str());
