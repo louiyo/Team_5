@@ -64,7 +64,6 @@ void Genome_analyser::writer(std::ofstream& output, bool forward) const{
 
 }
 
-//pas encore fonctionnelle
 void Genome_analyser::reader() {
 
     std::ifstream file_input(file_in.c_str());
@@ -147,74 +146,89 @@ void Genome_analyser::read_genome()
 		while(it != positions.end())
 		{
 			std::getline(genome_input, line);
-		}
-	}
-		//return range of all iterators with same key = all the different position ranges on the same chromosome 
-		std::pair <std::multimap<size_t, std::pair <size_t, size_t> >::iterator, std::multimap<size_t, std::pair <size_t, size_t> >::iterator> range(positions.equal_range(it->first));
-		
-		//reinitializes it
-		it = range.second;
-		
-		//goes through different position ranges
-		for(std::multimap<size_t, std::pair <size_t, size_t> >::iterator ref=range.begin(); ref!=range.second; ++ref)
+			
+			//if we are in the chromosome of interest
+			if(in_chromo)
 			{
-				//store boundaries of extracted seq and chromosome number
-				pos_inf = ref->second.first;
-				pos_sup = ref->second.second;
-				chrom_nbr = std::to_string(ref->first);
-				
-				
-				while(!genome_input.eof())
-				
+				//goes through different positions in chromosome
+				for(Positions::iterator ref=range.first; ref!=range.second; ++ref)
 				{
-					//get line of file
-					std::getline(genome_input, line);
+					//store boundaries of extracted seq and chromosome number
+					pos_inf = ref->second.first;
+					pos_sup = ref->second.second;
 					
-					//if we are in the chromosome of interest
-					if(in_chromo)
-					{
-						//extract sequence of interest char per char
-						genome_input.seekg(start_seq);
-						
-						for(size_t i(pos_inf); i < pos_sup, ++i)
-							{ 
-								genome_input.get(c);
-								seq += c; 
-							}
-						
-						//add to matrix
-						current_seq.set_seq(seq),
-						current_seq.add_points_to_matrix();
-					}
-				
-						
-					//if line with chromosome nbr
-					if( line[0] == '>')
-					{
-						//right chromo
-						if(line.compare('>chr' + chrom_nbr) == 0)
+					//extract sequence of interest char per char
+					start_seq = (pos_0 + pos_inf);
+					genome_input.seekg(start_seq);
+					for(size_t i(pos_inf); i < pos_sup; ++i)
 						{
-							in_chromo = true;
-						
-							//set start_seq index
-							start_seq = (genome_input.tellg());
-							start_seq += pos_inf;
+							genome_input.get(c);
+							if(c != '\n')
+								{seq += c;} 
 						}
-						
-						//if we're not
-						else
-						{ in_chromo = false; }
 					
-					}
-					
-					
-					
-				} 
-			}
-            
-           write_matrix();     
+					//add to matrix
+					current_seq.set_seq(seq),
+					current_seq.add_points_to_matrix();
+					seq = "";
+				}
 				
-               
+				in_chromo = false;
+				range = positions.equal_range(it->first);
+				chrom_nbr = std::to_string(it->first);
+				it = range.second;
+			}
+		
+				
+			
+			//right chromo
+			if(line.compare(">chr" + chrom_nbr) == 0)
+			{
+				in_chromo = true;
+				//set start_seq index
+				pos_0 = (genome_input.tellg());
+			}
+		}
+		
+		std::getline(genome_input, line);
+		//if we are in the chromosome of interest
+			if(in_chromo)
+			{
+				//goes through different positions in chromosome
+				for(Positions::iterator ref=range.first; ref!=range.second; ++ref)
+				{
+					//store boundaries of extracted seq and chromosome number
+					pos_inf = ref->second.first;
+					pos_sup = ref->second.second;
+					
+					//extract sequence of interest char per char
+					start_seq = (pos_0 + pos_inf);
+					genome_input.seekg(start_seq);
+					for(size_t i(pos_inf); i < pos_sup; ++i)
+						{
+							genome_input.get(c);
+							if(c != '\n')
+								{seq += c;} 
+						}
+					
+					//print
+					std::cout << "chr" << chrom_nbr << " " << seq << std::endl;
+					seq = "";
+				}
+				
+				in_chromo = false;
+			}	
+			
+			//right chromo
+			if(line.compare(">chr" + chrom_nbr) == 0)
+			{
+				in_chromo = true;
+				//set start_seq index
+				pos_0 = (genome_input.tellg());
+			}
+		
+	}
+	write_matrix();
 }
 
 
