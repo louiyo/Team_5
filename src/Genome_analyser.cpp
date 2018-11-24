@@ -119,26 +119,36 @@ void Genome_analyser::reader() {
         file_output.close();
 }
 
-void Genome_analyser::read_genome(std::string output_file)
+void Genome_analyser::read_genome()
 {
     std::ifstream genome_input(genome_in.c_str());
     std::ofstream file_output("DBP.mat");
     
-    std::string line, seq;
+    std::string line, seq, chrom_nbr;
     //get char from a file
     char c;
     bool in_chromo(false);
     size_t pos_inf(0);
     size_t pos_sup(0);
-    int chrom_nbr(0);
+    int pos_0(0);
     int start_seq(0);
     
     //goes through positions multimap
-    std::multimap<size_t, std::pair <size_t, size_t> >::iterator it(positions.begin());
+    Positions::iterator it(positions.begin());
+    
+    //range
+    Range range(positions.equal_range(it->first));
+    chrom_nbr = std::to_string(it->first);
+    it = range.second;
     
     //while it isn't at the end of positions
-    while(it != positions.end())
+    while(!genome_input.eof())
     {
+		while(it != positions.end())
+		{
+			std::getline(genome_input, line);
+		}
+	}
 		//return range of all iterators with same key = all the different position ranges on the same chromosome 
 		std::pair <std::multimap<size_t, std::pair <size_t, size_t> >::iterator, std::multimap<size_t, std::pair <size_t, size_t> >::iterator> range(positions.equal_range(it->first));
 		

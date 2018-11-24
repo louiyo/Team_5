@@ -9,6 +9,9 @@
 
 using namespace std;
 
+typedef std::multimap <size_t, std::pair <size_t, size_t> > Positions;
+typedef std::pair <Positions::iterator, Positions::iterator> Range;
+
 class Genome_analyser {
 public:
 
@@ -35,7 +38,7 @@ public:
      */
     void reader ();
     
-    void read_genome  (); // donnez lui le nom que vous voulez
+    void read_genome  (); // extrait les séquences dans le génome a partir de positions données (via la multimap)
     void read_positions_file (); //A VOIR COMMENT ON S'ORGANISE, POUR LE MOMENT CETTE FONCTION EXTRAIT SEULEMENT LES INFOS DU FICHIER.
 						  //IL FAUT PAR LA SUITE REMPLIR LA MULTIMAP AVEC CES INFOS.
 
