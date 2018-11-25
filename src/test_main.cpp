@@ -40,16 +40,16 @@ TEST(SequenceTest, matrix_construction)
 	}
 }
 
-TEST(test_score, calcul)
+TEST(test_score_fow, calcul)
 {
 	Sequence seq("DBP.mat");
 
 	seq.set_sequence("ATGCTCC");
 	double score = seq.score_fow();
-	EXPECT_NEAR(score, -16.4759996073, 0.0000000002)
+	EXPECT_NEAR(score, -16.4759996073, 0.0000000002);
 	
 	seq.set_sequence("AAAAAAA");
-	double score = seq.score_fow();
+	score = seq.score_fow();
 	EXPECT_NEAR(score, -5.10229832163, 0.0000000002);
 
 	seq.set_sequence("NNNNNNN");
@@ -57,9 +57,29 @@ TEST(test_score, calcul)
 
 	seq.set_sequence("");
 	EXPECT_EQ(seq.score_fow(),0);
-
-
 }
+
+
+TEST(test_score_rev, calcul)
+{
+	Sequence seq("DBP.mat");
+
+	seq.set_sequence("ATGCTCC");
+	double score = seq.score_rev();
+	EXPECT_NEAR(score, -13.7762893507, 0.0000000002);
+	
+	seq.set_sequence("TTTTTTT");
+	score = seq.score_rev();
+	EXPECT_NEAR(score, -5.10229832163, 0.0000000002);
+
+	seq.set_sequence("NNNNNNN");
+	EXPECT_EQ(seq.score_rev(),0);
+
+	seq.set_sequence("");
+	EXPECT_EQ(seq.score_rev(),0);
+}
+
+
 
 int main(int argc, char **argv) {
     ::testing::InitGoogleTest(&argc, argv);

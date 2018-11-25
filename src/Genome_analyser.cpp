@@ -1,5 +1,5 @@
 #include "Genome_analyser.h"
-
+#include <algorithm>
 #include <string>
 #include <fstream>
 
@@ -255,7 +255,8 @@ void Genome_analyser::read_genome()
 }
 
 
-void Genome_analyser::read_positions_file () {
+void Genome_analyser::read_positions_file ()
+{
 	
 	std::ifstream myfile(positions_file);
 	std::string line;
@@ -263,13 +264,36 @@ void Genome_analyser::read_positions_file () {
 	if ( myfile.is_open() ) {
 		while ( std::getline(myfile,line).good() ) {
 			std::string chrom;
-			std::size_t start, end;
+			size_t start, end;
 			myfile >> chrom >> start >> end; //récupère un string et 2 size_t du fichier.
 			chrom.erase(0,3); //enlève les lettres "chr".
-			std::size_t chrom_num = stoul(chrom); //convertit en unsigned long (size_t).
+			size_t chrom_num = stoul(chrom); //convertit en unsigned long (size_t).
+			
+			if(this->chromoAlreadyMapped(chrom_num)){
+
+				//ajoute la nouvelle information dans le vecteur déjà existant dans la map	
+				(positions[chrom_num]).push_back(std::make_pair(start, end));
+
+
+				std::sort(positions[chrom_num].begin(), positions[chrom_num].end(), 
+													[](auto &left, auto &right){
+					return left.second < right.second;
+				});
+
+			}else{ std::vector<std::pair<size_t, size_t>> newVec = {{start, end}};
+				positions[chrom_num] = newVec;; //ajoute un nouveau vecteur dans la map
+			}
 		}
 		myfile.close();
 	} /*else {
 		throw(std::runtime_error("BED_FILE")); //A VOIR LORS DE LA GESTION D'ERREUR
 	}*/
+}
+
+bool Genome_analyser::chromoAlreadyMapped(size_t chromo) const
+{
+	for ( auto p : positions){
+		if (p.first == chromo) return true; 
+	}
+	return false;
 }

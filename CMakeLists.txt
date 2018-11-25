@@ -4,7 +4,7 @@ project(Team_5)
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "" FORCE)
 endif(NOT CMAKE_BUILD_TYPE)
-SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
+SET(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++14")
 SET(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -Wall -pedantic")
 SET(CMAKE_CXX_FLAGS_RELEASE "${CMAKE_CXX_FLAGS_RELEASE} -O3")
 option(test "Build tests." ON)
@@ -23,13 +23,12 @@ if (test)
     SET(GTEST_BOTH_LIBRARIES libgtest.a libgtest_main.a)
   endif(NOT GTEST_FOUND)
   
-#COMPLETER AUSSI ICI			    \/
   
 include_directories(${GTEST_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/src)
 
-add_executable(testScore src/Genome_analyser.cpp src/Sequence.cpp src/test_main.cpp)
-target_link_libraries(testScore ${GTEST_BOTH_LIBRARIES} pthread)
-add_test(Team_5 testScore)
+add_executable(tests src/Genome_analyser.cpp src/Sequence.cpp src/test_main.cpp)
+target_link_libraries(tests ${GTEST_BOTH_LIBRARIES} pthread)
+add_test(Team_5 tests)
 
 endif(test)
 

@@ -22,15 +22,15 @@ Sequence::Sequence (const size_t & matrix_size)
 
 double Sequence::score_fow() const {
 
-	if(matrix_.size() != sequence_.size()){
+	if(matrix_.size() != sequence_.size()) {
 	 	/*throw std::runtime_error("MATRIXSIZE");*/
 	 	return 0;
 	}
 
 	double res(0);
-	size_t sequence_size = sequence_.size();
+	size_t seq_size = sequence_.size();
 
-	for (size_t i(0) ; i < sequence_size ; ++i) {
+	for (size_t i(0) ; i < seq_size ; ++i) {
 		switch(sequence_[i]) {
 			case ('A') : res += 2 + log2(matrix_[i][0]);
 						break;
@@ -54,25 +54,30 @@ double Sequence::score_fow() const {
 
 double Sequence::score_rev() const {
 
+	if(matrix_.size() != sequence_.size()) {
+	 	/*throw std::runtime_error("MATRIXSIZE");*/
+	 	return 0;
+	}
+
 	double res(0);
-	size_t matrice_size = sequence_.size() - 1;
-	size_t sequence_size = matrice_size + 1;
+	size_t seq_size = sequence_.size();
 
-	for (size_t i(0) ; i < sequence_size ; ++i) {
-		switch(sequence_[i]) {
-			case ('A') : res += 2 + log2(matrix_[matrice_size - i][3]);
+	for (size_t i(seq_size) ; i > 0 ; --i) {
+		switch(sequence_[i-1]) {
+			case ('A') : res += 2 + log2(matrix_[seq_size - i][3]);
 						break;
 
-			case ('C') : res += 2 + log2(matrix_[matrice_size - i][2]);
+			case ('C') : res += 2 + log2(matrix_[seq_size - i][2]);
 						break;
 
-			case ('G') : res += 2 + log2(matrix_[matrice_size - i][1]);
+			case ('G') : res += 2 + log2(matrix_[seq_size - i][1]);
 						break;
 
-			case ('T') : res += 2 + log2(matrix_[matrice_size - i][0]);
+			case ('T') : res += 2 + log2(matrix_[seq_size - i][0]);
 						break;
 
 			case ('N') : break;
+
 			default : /*throw std::runtime_error("NUCLEOTIDE");*/ break; //A VOIR LORS DE LA GESTION D'ERREUR
 		}
 	}

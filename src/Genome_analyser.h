@@ -5,11 +5,12 @@
 
 #include <iostream>
 #include <map>
+#include <vector>
 #include <utility>
 
 using namespace std;
 
-typedef std::multimap <size_t, std::pair <size_t, size_t> > Positions;
+typedef std::map <size_t, vector<std::pair <size_t, size_t> > > Positions;
 typedef std::pair <Positions::iterator, Positions::iterator> Range;
 
 class Genome_analyser {
@@ -42,6 +43,8 @@ public:
     void cut_positions(const Range& range, std::string& seq, std::ifstream& genome_input, size_t pos_0, std::string nbr);
     void read_positions_file (); //A VOIR COMMENT ON S'ORGANISE, POUR LE MOMENT CETTE FONCTION EXTRAIT SEULEMENT LES INFOS DU FICHIER.
 						  //IL FAUT PAR LA SUITE REMPLIR LA MULTIMAP AVEC CES INFOS.
+    
+    bool chromoAlreadyMapped(size_t chromo) const;
 
     /*
      * @brief génère la séquence de nucléotides complémentaire à une séquence donnée
@@ -86,7 +89,7 @@ private :
     size_t seq_size; //longueur de la séquence à couper
 
     std::string positions_file;
-    std::multimap <size_t, std::pair <size_t, size_t> > positions;
+    Positions positions;
     int nb_of_sequences_to_analyze;
 };
 

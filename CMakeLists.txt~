@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 2.6)
+project(Team_5)
+set(CMAKE_CXX_FLAGS "-W -Wall -pedantic -std=c++11")
+include_directories(${CMAKE_SOURCE_DIR}/include)  
+add_executable(Team_5 src/main.cpp src/Genome_analyser.cpp src/Sequence.cpp)
