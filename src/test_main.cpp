@@ -15,13 +15,6 @@ EXPECT_EQ("TGGCAAT", analyser.revert_seq("ATTGCCA"));
 	
 }
 
-TEST(Genome_analyserTest, read_write) {
-	
-	analyser.reader(); //est ce qu'on est obligé de le faire
-	//utiliser la fonction qui lit le bed pour comparer notre output a celui demandé
-
-}
-
 Sequence seq("DBP.mat");
 
 TEST(SequenceTest, matrix_construction)
