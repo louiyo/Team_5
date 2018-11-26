@@ -118,6 +118,7 @@ void Genome_analyser::reader() {
         file_output.close();
 }
 
+//regroupe toutes les séquences d'intérêt dans un chromosome donné et les ajoute a la matrice
 void Genome_analyser::cut_positions(const Range& range, std::ifstream& genome_input, size_t pos_0)
 {
 	//local variables
@@ -190,6 +191,7 @@ void Genome_analyser::read_genome()
 			}
 		}
 		
+		//last range
 		std::getline(genome_input, line);
 		//if we are in the chromosome of interest
 			if(in_chromo)
@@ -208,6 +210,8 @@ void Genome_analyser::read_genome()
 		
 	}
 	genome_input.close();
+	
+	//ecrit la matrice
 	write_matrix();
 }
 
