@@ -12,6 +12,12 @@ option(test "Build tests." ON)
 include_directories("/usr/local/include" ${CMAKE_SOURCE_DIR}/include)
 link_directories(${CMAKE_SOURCE_DIR}/lib "/usr/local/lib64")
 
+find_package(Doxygen)
+if (DOXYGEN_FOUND)
+  add_custom_target(doc ${DOXYGEN_EXECUTABLE} ${CMAKE_SOURCE_DIR}/Doxyfile
+          WORKING_DIRECTORY ${CMAKE_CURRENT_BINARY_DIR}
+          COMMENT "Generating API documentation with Doxygen" VERBATIM)
+endif(DOXYGEN_FOUND)
 
 add_executable(Team_5 src/main.cpp src/Genome_analyser.cpp src/Sequence.cpp)
 
