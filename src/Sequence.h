@@ -64,6 +64,13 @@ public:
     
     //Retourne la matrice (utile que pour test sequence) :
     vector< array<double,4>> get_matrix() const;
+    
+     //Compte le nombre de découpe pour une sequence donnée et rempli la matrice /utilise rempli matrice
+    void count_nucleotides(size_t taille);
+    //rempli la matrice selon le poids des nucleotides calculé
+    void rempli_matrice( string seq, double nbdecoupes);
+    //Compte le nb de sequence du fichier bed
+    void matrice_en_freq();
 
 
 private:
@@ -72,6 +79,7 @@ private:
     std::string sequence_;
     std::string myfilename;
     vector< array<double,4>> matrix_ ;
+    double compteur_seq;
 };
 
 #endif

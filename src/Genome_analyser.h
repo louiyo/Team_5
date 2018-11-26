@@ -78,10 +78,6 @@ public:
      */
     std::string get_seq () const;
     
-    //Compte le nombre de découpe pour une sequence donnée
-    void count_nucleotides(string seq,size_t taille);
-    //rempli la matrice selon le poids des nucleotides calculé
-    void rempli_matrice( string seq, double nbdecoupes);
     
     
 
@@ -98,6 +94,7 @@ private :
     std::string positions_file;
     Positions positions;
     int nb_of_sequences_to_analyze;
+    
 };
 
 #endif
