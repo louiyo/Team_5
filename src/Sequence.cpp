@@ -31,17 +31,24 @@ double Sequence::score_fow() const {
 
 	for (size_t i(0) ; i < seq_size ; ++i) {
 		switch(sequence_[i]) {
+			case ('a') :
 			case ('A') : res += 2 + log2(matrix_[i][0]);
 						break;
 
+			case ('c') :
 			case ('C') : res += 2 + log2(matrix_[i][1]);
 						break;
 
+			case ('g') :
 			case ('G') : res += 2 + log2(matrix_[i][2]);
 						break;
 
+			case ('t') :
 			case ('T') : res += 2 + log2(matrix_[i][3]);
 						break;
+
+			case ('n') :
+			case ('N') : break;:m
 
 			default : /*throw std::runtime_error("NUCLEOTIDE");*/ break; //A VOIR LORS DE LA GESTION D'ERREUR
 		}
@@ -63,18 +70,23 @@ double Sequence::score_rev() const {
 
 	for (size_t i(seq_size) ; i > 0 ; --i) {
 		switch(sequence_[i-1]) {
+			case ('a') :
 			case ('A') : res += 2 + log2(matrix_[seq_size - i][3]);
 						break;
 
+			case ('c') :
 			case ('C') : res += 2 + log2(matrix_[seq_size - i][2]);
 						break;
 
+			case ('g') :
 			case ('G') : res += 2 + log2(matrix_[seq_size - i][1]);
 						break;
 
+			case ('t') :
 			case ('T') : res += 2 + log2(matrix_[seq_size - i][0]);
 						break;
 
+			case ('n') :
 			case ('N') : break;
 
 			default : /*throw std::runtime_error("NUCLEOTIDE");*/ break; //A VOIR LORS DE LA GESTION D'ERREUR
@@ -166,19 +178,24 @@ void rempli_matrice(string seq, double nbdecoupes)
 	for (size_t i(0) ; i < sequence_.size() ; ++i)
 	{
 		switch(sequence_[i]) {
+			case ('a') :
 			case ('A') : matrix_[i][0]+=(1/(nbdecoupes));
 						break;
 
+			case ('c') :
 			case ('C') : matrix_[i][1]+=(1/(nbdecoupes));
 						break;
 
+			case ('g') :
 			case ('G') : matrix_[i][2]+=(1/(nbdecoupes));
 						break;
 
+			case ('t') :
 			case ('T') :matrix_[i][3]+=(1/(nbdecoupes));
 						break;
 						
-			//A completer Case('N')
+			case ('n') :
+			case ('N') : break;
 
 			default : /*throw std::runtime_error("NUCLEOTIDE");*/ break; //A VOIR LORS DE LA GESTION D'ERREUR
 		}

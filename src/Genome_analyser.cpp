@@ -23,18 +23,23 @@ void Genome_analyser::revert_seq() {
 	for(int i(seq.size()-1);i>=0;--i)
 	{
 		switch(seq[i]) {
+			case ('a') :
 			case ('A') : reverse+="T";
 						break;
 
+			case ('c') :
 			case ('C') : reverse+="G";
 						break;
 
+			case ('g') :
 			case ('G') : reverse+="C";
 						break;
 
+			case ('t') :
 			case ('T') : reverse+="A";
 						break;
 			
+			case ('n') :
 			case ('N') : reverse+='N';
 						break;
 			
