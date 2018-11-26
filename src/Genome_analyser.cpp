@@ -50,9 +50,13 @@ std::string Genome_analyser::get_seq() const {
 
 
 void Genome_analyser::extract_seq(std::string chromoseq, int length) {
+	
+	if(chromoseq.size() >= (current_pos_in_chr_in_line + length) )
+	{
 		current_seq.set_sequence (chromoseq.substr(current_pos_in_chr_in_line,length)); 
 		current_pos_in_chr+=1;
 		current_pos_in_chr_in_line +=1;
+	}
 }
 
 
@@ -193,8 +197,7 @@ void Genome_analyser::reader_2()
 				++ it;
 				chrom_nbr = it->first;
 			}
-		
-				
+			
 			
 			//right chromo
 			if(line.compare(chrom_nbr) == 0)

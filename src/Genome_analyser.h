@@ -78,6 +78,11 @@ public:
      */
     std::string get_seq () const;
     
+    std::vector< std::array<double,4>> get_matrix() const
+		{ 
+			return current_seq.get_matrix();
+		}
+    
     
     
 

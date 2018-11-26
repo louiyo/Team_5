@@ -1,18 +1,57 @@
 #include "Genome_analyser.h"
 #include "Sequence.h"
 #include <gtest/gtest.h>
+#include <fstream>
+#include <string>
 
 using namespace std;
 
+bool reader(std::string in, std::string out)
+	{
+		std::ifstream input(in.c_str());
+		std::ifstream output(out.c_str());
+		
+		std::string line_in, line_out;
+		
+		while(std::getline(input, line_in) && std::getline(output, line_out))
+			{
+				if(line_in.compare(line_out) != 0)
+					{ return false; }
+			}
+		
+		return true;
+		
+	}
 
-Genome_analyser analyser("promoters.fasta", "DBP.mat", 0.11);
+Genome_analyser analyser("test.fa", "test.mat", 0.11);
 
 TEST(Genome_anaylserTest, sequence_handling) {
 
 analyser.extract_seq("ATTGCCAT", 7);
-EXPECT_EQ("ATTGCCA", analyser.get_seq());
-EXPECT_EQ("TGGCAAT", analyser.revert_seq("ATTGCCA"));
+EXPECT_EQ(analyser.get_seq(), "ATTGCCA");
+analyser.extract_seq("ATTG", 7);
+EXPECT_EQ(analyser.get_seq(), "ATTGCCA");
+analyser.revert_seq("AtTGCCA");
+EXPECT_EQ(analyser.get_seq(),"TGGCAAT");
+analyser.revert_seq("ATTGCCN");
+EXPECT_EQ(analyser.get_seq(),"NGGCAAT");
 	
+}
+
+Range range; //a initialiser en fonction du type de structure
+vector< array<double,4>> test_mat; //idem
+
+TEST(Genome_analyser, reading) {
+	
+	//tester le output file d'abord
+	analyser.reader_1();
+	EXPECT_TRUE(reader("output_file.txt", "test_out.txt"));
+	
+	analyser.cut_positions(range, "test.fa", 5);
+	EXPECT_EQ(test_mat, analyser.get_matrix());
+	
+	analyser.reader_2();
+	EXPECT_TRUE(); //a completer
 }
 
 Sequence seq("DBP.mat");
