@@ -37,9 +37,9 @@ public:
     /*
      * @brief Extrait séquence par séquence à partir de la séquence chromosomique entière
      */
-    void reader ();
+    void reader_1 ();
     
-    void read_genome  (); // extrait les séquences dans le génome a partir de positions données (via la multimap)
+    void reader_2 (); // extrait les séquences dans le génome a partir de positions données (via la multimap)
     void cut_positions(const Range& range, std::string& seq, std::ifstream& genome_input, size_t pos_0, std::string nbr);
     void read_positions_file (); //A VOIR COMMENT ON S'ORGANISE, POUR LE MOMENT CETTE FONCTION EXTRAIT SEULEMENT LES INFOS DU FICHIER.
 						  //IL FAUT PAR LA SUITE REMPLIR LA MULTIMAP AVEC CES INFOS.

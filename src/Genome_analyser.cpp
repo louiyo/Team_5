@@ -64,7 +64,7 @@ void Genome_analyser::writer(std::ofstream& output, bool forward) const{
 
 }
 
-void Genome_analyser::reader() {
+void Genome_analyser::reader_1() {
 
     std::ifstream file_input(file_in.c_str());
     std::ofstream file_output("output_file.txt");
@@ -146,7 +146,7 @@ void Genome_analyser::cut_positions(const Range& range, std::ifstream& genome_in
 	
 }
 
-void Genome_analyser::read_genome()
+void Genome_analyser::reader_2()
 {
     std::ifstream genome_input(file_in.c_str());
     
