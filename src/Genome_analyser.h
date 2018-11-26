@@ -11,7 +11,7 @@
 using namespace std;
 
 typedef std::map <size_t, vector<std::pair <size_t, size_t> > > Positions;
-typedef std::pair <Positions::iterator, Positions::iterator> Range;
+typedef std::vector<std::pair <size_t, size_t>> Range;
 
 class Genome_analyser {
 public:
@@ -53,7 +53,7 @@ public:
      *
      * @return la séquence complémentaire à seq (de même direction 5'-3')
      */
-	std::string revert_seq (std::string seq) const;
+	void revert_seq ();
 
 	/*
 	 * @brief extrait séquence par séquence à partir d'un brin entier d'ADN (en changeant current_seq et les positions liées)

@@ -16,9 +16,9 @@ Genome_analyser::Genome_analyser (const std::string & genome_file, const size_t 
 {}
 
 
-std::string Genome_analyser::revert_seq(std::string seq) const {
+void Genome_analyser::revert_seq() {
 	
-	std::string reverse; //string reverse(current_seq.get_sequence();
+	string reverse(current_seq.get_sequence();
 	
 	for(int i(seq.size()-1);i>=0;--i)
 	{
@@ -34,9 +34,13 @@ std::string Genome_analyser::revert_seq(std::string seq) const {
 
 			case ('T') : reverse+="A";
 						break;
+			
+			case ('N') : reverse+='N';
+						break;
+			
 					}
 				}
-	return reverse; //current_seq.set_sequence(reverse);
+	current_seq.set_sequence(reverse);
 }
 
 
@@ -109,7 +113,6 @@ void Genome_analyser::reader_1() {
                         
 
 							if(current_seq.score_rev() > threshold) {
-								//Pas cool ecrit la séquence à l'envers, c'est mieux si ça ecrit dans le bon sens et après + ou - 
 								writer(file_output, false);
 							} 
 						} 
@@ -130,22 +133,33 @@ void Genome_analyser::cut_positions(const Range& range, std::ifstream& genome_in
 	char c;
 	
 	//goes through different positions in chromosome
-	for(Positions::iterator ref=range.first; ref!=range.second; ++ref)
+	for(auto struc : range)
 	{
 		//extract sequence of interest char per char
-		size_t start_seq(pos_0 + ref->second.first);
+		size_t start_seq(pos_0 + struc.position.first);
 		genome_input.seekg(start_seq);
-		for(size_t i(ref->second.first); i < ref->second.second; ++i)
+		for(size_t i(struc.position.first); i < struc.positions.second; ++i)
 			{
 				genome_input.get(c);
 				if(c != '\n')
 					{seq += c;} 
 			}
 		
-		//add to matrix
-		current_seq.set_seq(seq),
-		current_seq.add_points_to_matrix();
-		seq = "";
+		if(struc.signe == '-')
+		{
+			//add to matrix
+			current_seq.set_seq(seq);
+			revert_seq();
+			current_seq.count_nucleotides(seq_size);
+			seq = "";
+		}
+		else
+		{
+			//add to matrix
+			current_seq.set_seq(seq);
+			current_seq.count_nucleotides(seq_size);
+			seq = "";
+		}
 	}
 	
 }
@@ -159,13 +173,9 @@ void Genome_analyser::reader_2()
     bool in_chromo(false);
     size_t pos_0(0);
     
-    //goes through positions multimap
+    //goes through positions map
     Positions::iterator it(positions.begin());
-    
-    //range
-    Range range(positions.equal_range(it->first));
-    chrom_nbr = std::to_string(it->first);
-    it = range.second;
+    chrom_nbr = it->first;
     
     //while it isn't at the end of positions
     while(!genome_input.eof())
@@ -177,23 +187,23 @@ void Genome_analyser::reader_2()
 			//if we are in the chromosome of interest
 			if(in_chromo)
 			{
-				cut_positions(range, genome_input, pos_0);
-				//initialize range
+				cut_positions(it->second, genome_input, pos_0);
+				//initialize iterator on map element
 				in_chromo = false;
-				range = positions.equal_range(it->first);
-				chrom_nbr = std::to_string(it->first);
-				it = range.second;
+				++ it;
+				chrom_nbr = it->first;
 			}
 		
 				
 			
 			//right chromo
-			if(line.compare(">chr" + chrom_nbr) == 0)
+			if(line.compare(chrom_nbr) == 0)
 			{
 				in_chromo = true;
 				//set start_seq index
 				pos_0 = (genome_input.tellg());
 			}
+			
 		}
 		
 		//last range
@@ -201,7 +211,7 @@ void Genome_analyser::reader_2()
 		//if we are in the chromosome of interest
 			if(in_chromo)
 			{
-				cut_positions(range, genome_input, pos_0);
+				cut_positions(it->second, genome_input, pos_0);
 				in_chromo = false;
 			}	
 			
