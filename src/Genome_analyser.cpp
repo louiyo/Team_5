@@ -203,6 +203,7 @@ void Genome_analyser::cut_positions(const Range& range, std::ifstream& genome_in
 void Genome_analyser::reader_2()
 {
     std::ifstream genome_input(file_in.c_str());
+    std::ofstream file_output("output_file_Matrix.txt");
     
     std::string line, chrom_nbr;
     bool in_chromo(false);
@@ -263,10 +264,13 @@ void Genome_analyser::reader_2()
 			}
 		
 	}
-	genome_input.close();
 	
 	//ecrit la matrice
-	write_matrix();
+	current_seq.write_matrix(file_output);
+	
+	genome_input.close();
+	file_output.close();
+	
 }
 
 

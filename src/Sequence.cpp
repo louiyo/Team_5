@@ -1,5 +1,4 @@
 #include "Sequence.h"
-
 #include <cmath>
 #include <iostream>
 #include <sstream> 
@@ -111,6 +110,19 @@ void Sequence::ConstructMatrix (){
     } /*else {
         throw(std::runtime_error("MATRIX_FILE")); //A VOIR LORS DE LA GESTION D'ERREUR
     }*/
+}
+
+
+
+void Sequence::write_matrix(std::ofstream& output) const{
+	
+	if(output.is_open()){
+	for (size_t i(0); i< matrix_size(); i++){
+		for (size_t j(0); j<4 ; j++){
+		output >> matrix_ [i][j]<< "    ";
+			} outp>> endl;
+		}
+	}
 }
 
 
