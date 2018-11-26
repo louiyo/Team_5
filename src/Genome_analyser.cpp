@@ -64,6 +64,60 @@ void Genome_analyser::writer(std::ofstream& output, bool forward) const{
 
 }
 
+
+void count_nucleotides(string seq,size_t taille){
+	
+	int nbdecoupe((seq.size()-taille)+1); // Indique le nb de sequence possible si la taille de la sequence est differente de la taille demandee
+	
+	if(seq.size()<taille){throw std::invalid_argument("sequence trop petite");}//VERIFIER le type d'erreur
+	
+	if(not(seq.size()==taille)){
+		for(int i(0);i<nbdecoupe;++i){
+		rempli_matrice(seq.substr(i,taille),nbdecoupe);}
+	}	
+	
+	else { rempli_matrice(seq,nbdecoupe);}
+
+	}
+	
+void rempli_matrice( string seq, double nbdecoupes) 
+{
+	for (size_t i(0) ; i < seq.size() ; ++i)
+	{
+		switch(seq[i]) {
+			case ('A') : matrix_[i][0]+=(1/(nbdecoupes));
+						break;
+
+			case ('C') : matrix_[i][1]+=(1/(nbdecoupes));
+						break;
+
+			case ('G') : matrix_[i][2]+=(1/(nbdecoupes));
+						break;
+
+			case ('T') :matrix_[i][3]+=(1/(nbdecoupes));
+						break;
+
+			default : /*throw std::runtime_error("NUCLEOTIDE");*/ break; //A VOIR LORS DE LA GESTION D'ERREUR
+		}
+	}
+
+}
+
+
+void matrice_en_freq(){
+	
+	//compteur_seq  est un compteur de genome analyzer ou sequence qui compte le nombrede seq extraites
+	for(auto& ligne: matrix_){
+		for(auto& element: ligne){
+			element/= compteur_seq;} // ATTENTION compteur seq doit etre un double et verifer qu'il soit non nul
+	}
+	
+	}
+
+
+
+
+
 void Genome_analyser::reader_1() {
 
     std::ifstream file_input(file_in.c_str());

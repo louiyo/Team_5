@@ -77,6 +77,13 @@ public:
      * @return les nucléotides de la current_seq (de longueur seq_size)
      */
     std::string get_seq () const;
+    
+    //Compte le nombre de découpe pour une sequence donnée
+    void count_nucleotides(string seq,size_t taille);
+    //rempli la matrice selon le poids des nucleotides calculé
+    void rempli_matrice( string seq, double nbdecoupes);
+    
+    
 
 private :
 	
