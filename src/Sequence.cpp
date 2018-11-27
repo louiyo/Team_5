@@ -7,7 +7,9 @@
 using namespace std;
 
 
-Sequence::Sequence(const string& file): sequence_("None"), myfilename(file) {
+Sequence::Sequence(const string& file)
+	: sequence_("None"), myfilename(file)
+{
 	ConstructMatrix();
 }
 
@@ -19,8 +21,8 @@ Sequence::Sequence (const size_t & matrix_size)
 }
 
 
-double Sequence::score_fow() const {
-
+double Sequence::score_fow() const
+{
 	if(matrix_.size() != sequence_.size()) {
 	 	/*throw std::runtime_error("MATRIXSIZE");*/
 	 	return 0;
@@ -48,7 +50,7 @@ double Sequence::score_fow() const {
 						break;
 
 			case ('n') :
-			case ('N') : break;:m
+			case ('N') : break;
 
 			default : /*throw std::runtime_error("NUCLEOTIDE");*/ break; //A VOIR LORS DE LA GESTION D'ERREUR
 		}
@@ -58,8 +60,8 @@ double Sequence::score_fow() const {
 }
 
 
-double Sequence::score_rev() const {
-
+double Sequence::score_rev() const
+{
 	if(matrix_.size() != sequence_.size()) {
 	 	/*throw std::runtime_error("MATRIXSIZE");*/
 	 	return 0;
@@ -92,7 +94,6 @@ double Sequence::score_rev() const {
 			default : /*throw std::runtime_error("NUCLEOTIDE");*/ break; //A VOIR LORS DE LA GESTION D'ERREUR
 		}
 	}
-
 	return res;
 }
 
@@ -125,41 +126,43 @@ void Sequence::ConstructMatrix (){
 }
 
 
-
-void Sequence::write_matrix(std::ofstream& output) const{
-	
+void Sequence::write_matrix(std::ofstream& output) const
+{
 	if(output.is_open()){
-	for (size_t i(0); i< matrix_size(); i++){
-		for (size_t j(0); j<4 ; j++){
-		output >> matrix_ [i][j]<< "    ";
+		for (size_t i(0); i< matrix_size(); i++){
+			for (size_t j(0); j<4 ; j++){
+			output >> matrix_ [i][j]<< "    ";
 			} outp>> endl;
 		}
 	}
 }
 
 
-int Sequence::get_size() const {
+int Sequence::get_size() const
+{
 	return matrix_.size();
 }
 
 
-std::string Sequence::get_sequence() const {
+std::string Sequence::get_sequence() const
+{
 	return sequence_;
 }
 
 
-void Sequence::set_sequence(std::string newSeq) {
+void Sequence::set_sequence(std::string newSeq)
+{
 	sequence_ = newSeq;
 }
 
-vector< array<double,4>> Sequence::get_matrix() const {
+vector< array<double,4>> Sequence::get_matrix() const
+{
 	return matrix_;
 }
 
 
-
-void count_nucleotides(size_t taille){
-	
+void count_nucleotides(size_t taille)
+{
 	int nbdecoupe((sequence_.size()-taille)+1); // Indique le nb de sequence possible si la taille de la sequence est differente de la taille demandee
 	
 	if(sequence_.size()<taille){throw std::invalid_argument("sequence trop petite");}//VERIFIER le type d'erreur
@@ -170,8 +173,9 @@ void count_nucleotides(size_t taille){
 	}	
 	
 	else { rempli_matrice(sequence_,nbdecoupe);}
+}
 
-	}
+
 	
 void rempli_matrice(string seq, double nbdecoupes) 
 {
@@ -204,7 +208,9 @@ void rempli_matrice(string seq, double nbdecoupes)
 }
 
 
-void matrice_en_freq(){
+/*
+void matrice_en_freq()
+{
 	//Faire un trow si compteurseq=0
 	//compteur_seq  est un compteur de genome analyzer ou sequence qui compte le nombrede seq extraites
 	for(auto& ligne: matrix_){
@@ -212,5 +218,6 @@ void matrice_en_freq(){
 			element/= compteur_seq;} // ATTENTION compteur seq doit etre un double et verifer qu'il soit non nul
 	}
 	
-	}
+}
 
+*/

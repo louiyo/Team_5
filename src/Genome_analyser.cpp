@@ -16,8 +16,8 @@ Genome_analyser::Genome_analyser (const std::string & genome_file, const size_t 
 {}
 
 
-void Genome_analyser::revert_seq() {
-	
+void Genome_analyser::revert_seq()
+{
 	string reverse(current_seq.get_sequence();
 	
 	for(int i(seq.size()-1);i>=0;--i)
@@ -49,13 +49,14 @@ void Genome_analyser::revert_seq() {
 }
 
 
-std::string Genome_analyser::get_seq() const {
-		return current_seq.get_sequence();
-	}
+std::string Genome_analyser::get_seq() const
+{
+	return current_seq.get_sequence();
+}
 
 
-void Genome_analyser::extract_seq(std::string chromoseq, int length) {
-	
+void Genome_analyser::extract_seq(std::string chromoseq, int length)
+{
 	if(chromoseq.size() >= (current_pos_in_chr_in_line + length) )
 	{
 		current_seq.set_sequence (chromoseq.substr(current_pos_in_chr_in_line,length)); 
@@ -65,8 +66,8 @@ void Genome_analyser::extract_seq(std::string chromoseq, int length) {
 }
 
 
-void Genome_analyser::writer(std::ofstream& output, bool forward) const{
-
+void Genome_analyser::writer(std::ofstream& output, bool forward) const
+{
 	if(output.is_open()) {
 		if (forward) { 
 		    output<< chromosome_number<<" "<<current_pos_in_chr<<" "<<"+"<<" " <<current_seq.get_sequence()<<" "<<current_seq.score_fow()<<std::endl;
@@ -74,15 +75,14 @@ void Genome_analyser::writer(std::ofstream& output, bool forward) const{
 		    output<< chromosome_number<<" "<<current_pos_in_chr<<" "<<"-" << " " <<current_seq.get_sequence()<<" "<<current_seq.score_rev()<<std::endl;
 	    }
 	}
-
 }
 
 
 
 
 
-void Genome_analyser::reader_1() {
-
+void Genome_analyser::reader_1()
+{
     std::ifstream file_input(file_in.c_str());
     std::ofstream file_output("output_file.txt");
     
