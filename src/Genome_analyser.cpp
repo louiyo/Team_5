@@ -296,7 +296,9 @@ void Genome_analyser::ConstructPositions (const std::string & file)
 				} 
 			} else {
 				//ajoute une nouvelle key avec nouveau vector dans la map
-				positions.insert(chrom_num, newPos);
+				std::vector<Position> newVec;
+				newVec.push_back(newPos);
+				positions[chrom_num] = newVec;
 			}	
 		}
 		myfile.close();
@@ -316,17 +318,17 @@ bool Genome_analyser::chromoAlreadyMapped(size_t chromo) const
 }
 
 
-bool Genome_analyser::sortPosition (std::vector pos, Position newPos)
+bool Genome_analyser::sortPosition (std::vector<Position>& pos, Position newPos)
 {
-	size_t i(0);
+	std::vector<Position>::iterator it;
+	it = pos.begin();
 
-	while (i < pos.size())
+	while (it != pos.end())
 	{
-		if (newPos.start < pos[i].start) {
-			pos.insert(i, newPos);
+		if (newPos.start < it->start) {
+			pos.insert(it, 1, newPos);
 			return true;
 		} else ++i;
-
-		return false;
 	}
+	return false;
 }

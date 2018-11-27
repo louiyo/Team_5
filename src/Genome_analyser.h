@@ -53,7 +53,7 @@ public:
     
     //FONCTIONS UTILITAIRES DE READ_POSITIONS_FILE
     bool chromoAlreadyMapped(size_t chromo) const;
-    bool sortPosition (std::vector pos, Position newPos);
+    bool sortPosition (std::vector<Position>& pos, Position newPos);
 
     /*
      * @brief génère la séquence de nucléotides complémentaire à une séquence donnée
