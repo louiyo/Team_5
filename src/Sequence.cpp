@@ -112,13 +112,6 @@ void Sequence::ConstructMatrix (){
             matrix_.push_back(values);
         }
 
-        for (size_t i(0); i<matrix_.size(); i++){
-            for (size_t j(0); j< matrix_[i].size(); j++){
-                cout << matrix_[i][j] << "   ";
-            }
-            cout << endl;
-        }
-
         myfile.close();
     } /*else {
         throw(std::runtime_error("MATRIX_FILE")); //A VOIR LORS DE LA GESTION D'ERREUR

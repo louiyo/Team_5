@@ -7,13 +7,30 @@ using namespace std;
 
 
 Genome_analyser::Genome_analyser(const std::string & file_input, const std::string & matrix_file, const double & thrs)
-: current_seq(matrix_file), threshold(thrs), file_in(file_input), seq_size(current_seq.get_size()) 
+	: current_seq(matrix_file),
+	threshold(thrs),
+	//chromosome_number??
+	current_pos_in_chr(0),
+	file_in(file_input),
+	current_pos_in_line(0),
+	seq_size(current_seq.get_size())
+	//positions??
+	//nb_of_sequences_to_analyze?? 
 {}
 
 
-/*Genome_analyser::Genome_analyser (const std::string & genome_file, const size_t & size, const std::string & pos_file)
-: file_in (genome_file), seq_size(size), positions_file(pos_file)
-{}*/
+//~ Genome_analyser::Genome_analyser(const std::string & genome_file, const size_t & size, const std::string & pos_file)
+	//~ : current_seq(size),
+	//~ threshold(0),
+	//~ //chromosome_number??
+	//~ current_pos_in_chr(0),
+	//~ file_in(genome_file),
+	//~ current_pos_in_chr(0),
+	//~ seq_size(size)
+	//~ //nb_of_sequences_to_analyze??
+//~ {
+	//~ ConstructPositions(pos_file);
+//~ }
 
 
 void Genome_analyser::revert_seq()
@@ -243,20 +260,31 @@ void Genome_analyser::reader_2()
 }
 
 
-void Genome_analyser::read_positions_file ()
+void Genome_analyser::ConstructPositions (const std::string & file)
 {
 	
-	std::ifstream myfile(positions_file);
-	std::string line;
+	std::ifstream myfile(file);
 	
 	if ( myfile.is_open() ) {
-		while ( std::getline(myfile,line).good() )
-		{
-			std::string chrom;
-			size_t start, end;
-			myfile >> chrom >> start >> end; //récupère un string et 2 size_t du fichier.
-			chrom.erase(0,3); //enlève les lettres "chr".
-			size_t chrom_num = stoul(chrom); //convertit en unsigned long (size_t).
+		std::string chrom;
+		std::size_t start, end;
+		char info;
+		while (myfile >> chrom >> start >> end) {
+			bool forward(true);
+			chrom.erase(0,3);
+			size_t chrom_num = std::stoul(chrom);
+			if ( myfile.peek() != '\n' ) {
+				myfile >> info;
+				if ( info == '-' ) forward = false;
+			}
+			if ( myfile.peek() != '\n' ) {
+				myfile >> info;
+				if ( info == '-' ) forward = false;
+			}
+			if ( myfile.peek() != '\n' ) {
+				myfile >> info;
+				if ( info == '-' ) forward = false;
+			}
 			
 			Position newPos = {start, end, forward};
 

@@ -48,8 +48,7 @@ public:
     
     void reader_2 (); // extrait les séquences dans le génome a partir de positions données (via la multimap)
     void cut_positions(const Range& range, std::ifstream& genome_input, size_t pos_0);
-    void read_positions_file (); //A VOIR COMMENT ON S'ORGANISE, POUR LE MOMENT CETTE FONCTION EXTRAIT SEULEMENT LES INFOS DU FICHIER.
-						  //IL FAUT PAR LA SUITE REMPLIR LA MULTIMAP AVEC CES INFOS.
+	void ConstructPositions (const std::string & file);
     
     
     //FONCTIONS UTILITAIRES DE READ_POSITIONS_FILE
@@ -101,12 +100,11 @@ private :
 	Sequence current_seq;
     double threshold;
     std::string chromosome_number;
-    size_t current_pos_in_chr = 0; //position courante dans la séquence chromosomique
+    size_t current_pos_in_chr; //position courante dans la séquence chromosomique
     std::string file_in; //nom du fichier du génôme
-    size_t current_pos_in_line = 0;
+    size_t current_pos_in_line;
     size_t seq_size; //longueur de la séquence à couper
 
-    std::string positions_file;
     Positions positions;        //tableau des positions à aller chercher dans le génome
     int nb_of_sequences_to_analyze;
     
