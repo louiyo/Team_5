@@ -28,14 +28,14 @@ Genome_analyser analyser("test.fa", "test.mat", 0.11);
 
 TEST(Genome_anaylserTest, sequence_handling) {
 
-analyser.extract_seq("ATTGCCAT", 7);
-EXPECT_EQ(analyser.get_seq(), "ATTGCCA");
-analyser.extract_seq("ATTG", 7);
-EXPECT_EQ(analyser.get_seq(), "ATTGCCA");
-analyser.revert_seq("AtTGCCA");
-EXPECT_EQ(analyser.get_seq(),"TGGCAAT");
-analyser.revert_seq("ATTGCCN");
-EXPECT_EQ(analyser.get_seq(),"NGGCAAT");
+analyser.extract_seq("ATTNCCATTAGATCCAGATCNNATG", 7);
+EXPECT_EQ(analyser.get_seq(), "ATTNCCA");
+analyser.extract_seq("ATTNCCATTAGATCCAGATCNNATG", 7);
+EXPECT_EQ(analyser.get_seq(), "TTNCCAT");
+analyser.revert_seq();
+EXPECT_EQ(analyser.get_seq(),"ATGGNAA");
+analyser.revert_seq();
+EXPECT_EQ(analyser.get_seq(),"TTNCCAT");
 	
 }
 
@@ -46,13 +46,13 @@ TEST(Genome_analyser, reading) {
 	
 	//tester le output file d'abord
 	analyser.reader_1();
-	EXPECT_TRUE(reader("output_file.txt", "test_out.txt"));
+	/*EXPECT_TRUE(reader("output_file.txt", "test_out.txt"));
 	
 	analyser.cut_positions(range, "test.fa", 5);
 	EXPECT_EQ(test_mat, analyser.get_matrix());
 	
 	analyser.reader_2();
-	EXPECT_TRUE(); //a completer
+	EXPECT_TRUE(); //a completer*/
 }
 
 Sequence seq("DBP.mat");

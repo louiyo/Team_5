@@ -7,7 +7,7 @@ using namespace std;
 
 
 Genome_analyser::Genome_analyser(const std::string & file_input, const std::string & matrix_file, const double & thrs)
-: current_seq(matrix_file), threshold(thrs), seq_size(current_seq.get_size()), current_pos_in_chr(0), file_in(file_input)
+: current_seq(matrix_file), threshold(thrs), file_in(file_input), seq_size(current_seq.get_size()) 
 {}
 
 
@@ -18,11 +18,11 @@ Genome_analyser::Genome_analyser (const std::string & genome_file, const size_t 
 
 void Genome_analyser::revert_seq()
 {
-	string reverse(current_seq.get_sequence();
+	string reverse(current_seq.get_sequence());
 	
-	for(int i(seq.size()-1);i>=0;--i)
+	for(int i(seq_size-1);i>=0;--i)
 	{
-		switch(seq[i]) {
+		switch(current_seq.get_sequence()[i]) {
 			case ('a') :
 			case ('A') : reverse+="T";
 						break;
@@ -57,11 +57,11 @@ std::string Genome_analyser::get_seq() const
 
 void Genome_analyser::extract_seq(std::string chromoseq, int length)
 {
-	if(chromoseq.size() >= (current_pos_in_chr_in_line + length) )
+	if(chromoseq.size() >= (current_pos_in_line + length) )
 	{
-		current_seq.set_sequence (chromoseq.substr(current_pos_in_chr_in_line,length)); 
+		current_seq.set_sequence (chromoseq.substr(current_pos_in_line,length)); 
 		current_pos_in_chr+=1;
-		current_pos_in_chr_in_line +=1;
+		current_pos_in_line +=1;
 	}
 }
 
@@ -99,20 +99,20 @@ void Genome_analyser::reader_1()
                     chromosome_number.erase(0,1);
                     current_pos_in_chr = 0;
                     last = "";
-                    current_pos_in_chr_in_line = 0;
+                    current_pos_in_line = 0;
 
                 } else {
 
                     counter += 1;
                     chromo_seq = last;
                     chromo_seq += line;
-                    current_pos_in_chr_in_line = 0;
+                    current_pos_in_line = 0;
 
                     if(chromo_seq.size() >= seq_size) {
 
                         last = line.substr(line.size()-seq_size + 1, seq_size);
                         
-                        while(current_pos_in_chr_in_line <= (chromo_seq.size()- seq_size) ) {
+                        while(current_pos_in_line <= (chromo_seq.size()- seq_size) ) {
 
                             extract_seq(chromo_seq, seq_size);
 
@@ -134,6 +134,7 @@ void Genome_analyser::reader_1()
         file_output.close();
 }
 
+/*
 //regroupe toutes les séquences d'intérêt dans un chromosome donné et les ajoute a la matrice
 void Genome_analyser::cut_positions(const Range& range, std::ifstream& genome_input, size_t pos_0)
 {
@@ -274,8 +275,8 @@ void Genome_analyser::read_positions_file ()
 		myfile.close();
 	} /*else {
 		throw(std::runtime_error("BED_FILE")); //A VOIR LORS DE LA GESTION D'ERREUR
-	}*/
-}
+	}
+} */
 
 bool Genome_analyser::chromoAlreadyMapped(size_t chromo) const
 {

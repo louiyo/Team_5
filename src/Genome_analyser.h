@@ -7,6 +7,7 @@
 #include <map>
 #include <vector>
 #include <utility>
+#include <string>
 
 using namespace std;
 
@@ -93,7 +94,7 @@ private :
     std::string chromosome_number;
     size_t current_pos_in_chr = 0; //position courante dans la séquence chromosomique
     std::string file_in; //nom du fichier du génôme
-    size_t current_pos_in_chr_in_line = 0;
+    size_t current_pos_in_line = 0;
     size_t seq_size; //longueur de la séquence à couper
 
     std::string positions_file;
