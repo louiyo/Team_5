@@ -6,18 +6,18 @@
 #include <iostream>
 #include <map>
 #include <vector>
-#include <utility>
 #include <string>
 
 using namespace std;
 
-struct Position {
+struct Position
+{
 	size_t start;
 	size_t end;
 	bool forward;
 };
 
-typedef std::map <size_t, vector<Position > > Positions;
+typedef std::map <size_t, std::vector<Position> > Positions;
 typedef std::vector<Position> Range;
 
 class Genome_analyser {
@@ -51,7 +51,10 @@ public:
     void read_positions_file (); //A VOIR COMMENT ON S'ORGANISE, POUR LE MOMENT CETTE FONCTION EXTRAIT SEULEMENT LES INFOS DU FICHIER.
 						  //IL FAUT PAR LA SUITE REMPLIR LA MULTIMAP AVEC CES INFOS.
     
+    
+    //FONCTIONS UTILITAIRES DE READ_POSITIONS_FILE
     bool chromoAlreadyMapped(size_t chromo) const;
+    bool sortPosition (std::vector pos, Position newPos);
 
     /*
      * @brief génère la séquence de nucléotides complémentaire à une séquence donnée
@@ -104,7 +107,7 @@ private :
     size_t seq_size; //longueur de la séquence à couper
 
     std::string positions_file;
-    Positions positions;
+    Positions positions;        //tableau des positions à aller chercher dans le génome
     int nb_of_sequences_to_analyze;
     
 };
