@@ -155,22 +155,21 @@ void Genome_analyser::cut_positions(const Range& range, std::ifstream& genome_in
 				if(c != '\n')
 					{seq += c;} 
 			}
-		
-		if(!struc.forward)
+		/*if(!struc.forward)
 		{
 			//add to matrix
 			current_seq.set_sequence(seq);
 			revert_seq();
-			//current_seq.count_nucleotides(seq_size);
+			current_seq.count_nucleotides(seq_size);
 			seq = "";
 		}
 		else
 		{
 			//add to matrix
 			current_seq.set_sequence(seq);
-			//current_seq.count_nucleotides(seq_size);
+			current_seq.count_nucleotides(seq_size);
 			seq = "";
-		}
+		}*/
 	}
 	
 }

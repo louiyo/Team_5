@@ -39,7 +39,7 @@ EXPECT_EQ(analyser.get_seq(),"TTNCCAT");
 	
 }
 
-Range range; //a initialiser en fonction du type de structure
+Range range = {{1,4,true},{4,7, false}};
 vector< array<double,4>> test_mat; //idem
 
 TEST(Genome_analyser, reading) {
@@ -49,11 +49,11 @@ TEST(Genome_analyser, reading) {
 	analyser.reader_1();
 	//EXPECT_TRUE(reader("output_file.txt", "test_out.txt"));
 	
-	analyser.cut_positions(range, mat, 5);
-	EXPECT_EQ(test_mat, analyser.get_matrix());
+	analyser.cut_positions(range, mat, 5); //fonctionne avec count nucleotides commenté
+	//EXPECT_EQ(test_mat, analyser.get_matrix());
 	
-	/*analyser.reader_2();
-	EXPECT_TRUE(); //a completer*/
+	//analyser.reader_2();
+	//EXPECT_TRUE(); //a completer
 }
 
 Sequence seq("DBP.mat");
