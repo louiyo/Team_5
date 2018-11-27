@@ -44,14 +44,15 @@ vector< array<double,4>> test_mat; //idem
 
 TEST(Genome_analyser, reading) {
 	
+	std::ifstream mat("test.fa");
 	//tester le output file d'abord
 	analyser.reader_1();
-	/*EXPECT_TRUE(reader("output_file.txt", "test_out.txt"));
+	//EXPECT_TRUE(reader("output_file.txt", "test_out.txt"));
 	
-	analyser.cut_positions(range, "test.fa", 5);
+	analyser.cut_positions(range, mat, 5);
 	EXPECT_EQ(test_mat, analyser.get_matrix());
 	
-	analyser.reader_2();
+	/*analyser.reader_2();
 	EXPECT_TRUE(); //a completer*/
 }
 

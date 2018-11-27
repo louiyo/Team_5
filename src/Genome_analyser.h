@@ -11,8 +11,14 @@
 
 using namespace std;
 
-typedef std::map <size_t, vector<std::pair <size_t, size_t> > > Positions;
-typedef std::vector<std::pair <size_t, size_t>> Range;
+struct Position {
+	size_t start;
+	size_t end;
+	bool forward;
+};
+
+typedef std::map <size_t, vector<Position > > Positions;
+typedef std::vector<Position> Range;
 
 class Genome_analyser {
 public:
@@ -41,7 +47,7 @@ public:
     void reader_1 ();
     
     void reader_2 (); // extrait les séquences dans le génome a partir de positions données (via la multimap)
-    void cut_positions(const Range& range, std::string& seq, std::ifstream& genome_input, size_t pos_0, std::string nbr);
+    void cut_positions(const Range& range, std::ifstream& genome_input, size_t pos_0);
     void read_positions_file (); //A VOIR COMMENT ON S'ORGANISE, POUR LE MOMENT CETTE FONCTION EXTRAIT SEULEMENT LES INFOS DU FICHIER.
 						  //IL FAUT PAR LA SUITE REMPLIR LA MULTIMAP AVEC CES INFOS.
     

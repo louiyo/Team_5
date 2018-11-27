@@ -11,18 +11,19 @@ Genome_analyser::Genome_analyser(const std::string & file_input, const std::stri
 {}
 
 
-Genome_analyser::Genome_analyser (const std::string & genome_file, const size_t & size, const std::string & pos_file)
+/*Genome_analyser::Genome_analyser (const std::string & genome_file, const size_t & size, const std::string & pos_file)
 : file_in (genome_file), seq_size(size), positions_file(pos_file)
-{}
+{}*/
 
 
 void Genome_analyser::revert_seq()
 {
-	string reverse(current_seq.get_sequence());
+	std::string reverse;
+	std::string seq(current_seq.get_sequence());
 	
-	for(int i(seq_size-1);i>=0;--i)
+	for(int i(seq.size()-1);i>=0;--i)
 	{
-		switch(current_seq.get_sequence()[i]) {
+		switch(seq[i]) {
 			case ('a') :
 			case ('A') : reverse+="T";
 						break;
@@ -134,7 +135,7 @@ void Genome_analyser::reader_1()
         file_output.close();
 }
 
-/*
+
 //regroupe toutes les séquences d'intérêt dans un chromosome donné et les ajoute a la matrice
 void Genome_analyser::cut_positions(const Range& range, std::ifstream& genome_input, size_t pos_0)
 {
@@ -146,28 +147,28 @@ void Genome_analyser::cut_positions(const Range& range, std::ifstream& genome_in
 	for(auto struc : range)
 	{
 		//extract sequence of interest char per char
-		size_t start_seq(pos_0 + struc.position.first);
+		size_t start_seq(pos_0 + struc.start);
 		genome_input.seekg(start_seq);
-		for(size_t i(struc.position.first); i < struc.positions.second; ++i)
+		for(size_t i(struc.start); i < struc.end; ++i)
 			{
 				genome_input.get(c);
 				if(c != '\n')
 					{seq += c;} 
 			}
 		
-		if(struc.signe == '-')
+		if(!struc.forward)
 		{
 			//add to matrix
-			current_seq.set_seq(seq);
+			current_seq.set_sequence(seq);
 			revert_seq();
-			current_seq.count_nucleotides(seq_size);
+			//current_seq.count_nucleotides(seq_size);
 			seq = "";
 		}
 		else
 		{
 			//add to matrix
-			current_seq.set_seq(seq);
-			current_seq.count_nucleotides(seq_size);
+			current_seq.set_sequence(seq);
+			//current_seq.count_nucleotides(seq_size);
 			seq = "";
 		}
 	}
@@ -235,14 +236,14 @@ void Genome_analyser::reader_2()
 	}
 	
 	//ecrit la matrice
-	current_seq.write_matrix(file_output);
+	//current_seq.write_matrix(file_output);
 	
 	genome_input.close();
 	file_output.close();
 	
 }
 
-
+/*
 void Genome_analyser::read_positions_file ()
 {
 	
@@ -276,7 +277,7 @@ void Genome_analyser::read_positions_file ()
 	} /*else {
 		throw(std::runtime_error("BED_FILE")); //A VOIR LORS DE LA GESTION D'ERREUR
 	}
-} */
+} 
 
 bool Genome_analyser::chromoAlreadyMapped(size_t chromo) const
 {
@@ -284,4 +285,4 @@ bool Genome_analyser::chromoAlreadyMapped(size_t chromo) const
 		if (p.first == chromo) return true; 
 	}
 	return false;
-}
+}*/
