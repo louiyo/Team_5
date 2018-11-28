@@ -30,7 +30,7 @@ public:
      * @param matrix_file (un std::string) : le nom du fichier qui contient la matrice
      * @param thrs (un double) : le seuil de validité du score d'une séquence
      */
-	Genome_analyser (const std::string & file_input, const std::string & matrix_file, const double & thrs);
+	Genome_analyser (const std::string & matrix_file, const double & thrs);
 
 	/*
 	 * @brief constructeur (input 2)
@@ -39,15 +39,15 @@ public:
 	 * @param size (un double) : la longueur du motif des séquences
      * @param pos_file (un std::string) : le nom du fichier qui continet les coordonnées des séquences
 	 */
-	Genome_analyser (const std::string & genome_file, const size_t & size, const std::string & pos_file);
+	Genome_analyser (const size_t & size, const std::string & pos_file);
 
     /*
      * @brief Extrait séquence par séquence à partir de la séquence chromosomique entière
      */
-    void reader_1 ();
+    void reader_1 (std::string file);
     
-    void reader_2 (); // extrait les séquences dans le génome a partir de positions données (via la multimap)
-    void cut_positions(const Range& range, std::ifstream& genome_input, size_t pos_0);
+    void reader_2 (bool one_file, std::string file); // extrait les séquences dans le génome a partir de positions données (via la multimap)
+    void cut_positions(const Range& range, std::ifstream& genome_input, size_t pos_0, size_t size);
 	void ConstructPositions (const std::string & file);
     
     
@@ -101,7 +101,6 @@ private :
     double threshold;
     std::string chromosome_number;
     size_t current_pos_in_chr; //position courante dans la séquence chromosomique
-    std::string file_in; //nom du fichier du génôme
     size_t current_pos_in_line;
     size_t seq_size; //longueur de la séquence à couper
 

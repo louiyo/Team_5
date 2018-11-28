@@ -42,14 +42,15 @@ EXPECT_EQ(analyser.get_seq(),"TTNCCAT");
 Range range = {{1,4,true},{4,7, false}};
 vector< array<double,4>> test_mat; //idem
 
+//Genome_analyser analyser_2 nouveau constructeur
 TEST(Genome_analyser, reading) {
 	
-	std::ifstream mat("test.fa");
+	std::ifstream gen("test.fa");
 	//tester le output file d'abord
 	analyser.reader_1();
 	//EXPECT_TRUE(reader("output_file.txt", "test_out.txt"));
 	
-	analyser.cut_positions(range, mat, 5); //fonctionne avec count nucleotides commenté
+	analyser.cut_positions(range, gen, 5, 3); 
 	//EXPECT_EQ(test_mat, analyser.get_matrix());
 	
 	//analyser.reader_2();

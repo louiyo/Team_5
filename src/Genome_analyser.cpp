@@ -99,9 +99,9 @@ void Genome_analyser::writer(std::ofstream& output, bool forward) const
 
 
 
-void Genome_analyser::reader_1()
+void Genome_analyser::reader_1(std::string file)
 {
-    std::ifstream file_input(file_in.c_str());
+    std::ifstream file_input(file.c_str());
     std::ofstream file_output("output_file.txt");
     
     std::string chromo_seq, line, last;
@@ -154,7 +154,7 @@ void Genome_analyser::reader_1()
 
 
 //regroupe toutes les séquences d'intérêt dans un chromosome donné et les ajoute a la matrice
-void Genome_analyser::cut_positions(const Range& range, std::ifstream& genome_input, size_t pos_0)
+void Genome_analyser::cut_positions(const Range& range, std::ifstream& genome_input, size_t pos_0, size_t size)
 {
 	//local variables
 	std::string seq;
@@ -172,28 +172,28 @@ void Genome_analyser::cut_positions(const Range& range, std::ifstream& genome_in
 				if(c != '\n')
 					{seq += c;} 
 			}
-		/*if(!struc.forward)
+		if(!struc.forward)
 		{
 			//add to matrix
 			current_seq.set_sequence(seq);
 			revert_seq();
-			current_seq.count_nucleotides(seq_size);
+			current_seq.count_nucleotides(size);
 			seq = "";
 		}
 		else
 		{
 			//add to matrix
 			current_seq.set_sequence(seq);
-			current_seq.count_nucleotides(seq_size);
+			current_seq.count_nucleotides(size);
 			seq = "";
-		}*/
+		}
 	}
 	
 }
 
-void Genome_analyser::reader_2()
+void Genome_analyser::reader_2(bool one_file, std::string file)
 {
-    std::ifstream genome_input(file_in.c_str());
+    std::ifstream genome_input(file.c_str());
     std::ofstream file_output("output_file_Matrix.txt");
     
     std::string line, chrom_nbr;
@@ -203,6 +203,11 @@ void Genome_analyser::reader_2()
     //goes through positions map
     Positions::iterator it(positions.begin());
     chrom_nbr = it->first;
+    
+    if(one_file)
+		{ while(it->first != file)
+			{ ++it; }
+		}
     
     //while it isn't at the end of positions
     while(!genome_input.eof())
@@ -214,11 +219,18 @@ void Genome_analyser::reader_2()
 			//if we are in the chromosome of interest
 			if(in_chromo)
 			{
-				cut_positions(it->second, genome_input, pos_0);
+				cut_positions(it->second, genome_input, pos_0, seq_size);
 				//initialize iterator on map element
-				in_chromo = false;
-				++ it;
-				chrom_nbr = it->first;
+				
+				//if one file, goes to the end of positions
+				if(one_file)
+					{ it = positions.end(); }
+				else
+					{
+						in_chromo = false;
+						++ it;
+						chrom_nbr = it->first;
+					}
 			}
 			
 			
@@ -232,27 +244,32 @@ void Genome_analyser::reader_2()
 			
 		}
 		
-		//last range
-		std::getline(genome_input, line);
-		//if we are in the chromosome of interest
-			if(in_chromo)
+		//
+		if(!one_file)
 			{
-				cut_positions(it->second, genome_input, pos_0);
-				in_chromo = false;
-			}	
-			
-			//right chromo
-			if(line.compare(">chr" + chrom_nbr) == 0)
-			{
-				in_chromo = true;
-				//set start_seq index
-				pos_0 = (genome_input.tellg());
+				//last range
+				std::getline(genome_input, line);
+				//if we are in the chromosome of interest
+					if(in_chromo)
+					{
+						cut_positions(it->second, genome_input, pos_0, seq_size);
+						in_chromo = false;
+					}	
+					
+					//right chromo
+					if(line.compare(">chr" + chrom_nbr) == 0)
+					{
+						in_chromo = true;
+						//set start_seq index
+						pos_0 = (genome_input.tellg());
+					}
 			}
+		
 		
 	}
 	
 	//ecrit la matrice
-	//current_seq.write_matrix(file_output);
+	current_seq.write_matrix(file_output);
 	
 	genome_input.close();
 	file_output.close();
