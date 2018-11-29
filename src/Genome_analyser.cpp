@@ -169,8 +169,10 @@ void Genome_analyser::cut_positions(const Range& range, std::ifstream& genome_in
 		for(size_t i(struc.start); i < struc.end; ++i)
 			{
 				genome_input.get(c);
-				if(c != '\n')
-					{seq += c;} 
+				if(c == '\n')
+					{ genome_input.get(c);}
+				seq += c;
+
 			}
 		if(!struc.forward)
 		{
@@ -196,18 +198,13 @@ void Genome_analyser::reader_2(bool one_file, std::string file)
     std::ifstream genome_input(file.c_str());
     std::ofstream file_output("output_file_Matrix.txt");
     
-    std::string line, chrom_nbr;
+    std::string line;
     bool in_chromo(false);
     size_t pos_0(0);
     
     //goes through positions map
     Positions::iterator it(positions.begin());
-    chrom_nbr = it->first;
-    
-    if(one_file)
-		{ while(it->first != file)
-			{ ++it; }
-		}
+  
     
     //while it isn't at the end of positions
     while(!genome_input.eof())
@@ -224,27 +221,38 @@ void Genome_analyser::reader_2(bool one_file, std::string file)
 				
 				//if one file, goes to the end of positions
 				if(one_file)
-					{ it = positions.end(); }
+					{ it = positions.end();
+						in_chromo = false; }
 				else
 					{
 						in_chromo = false;
 						++ it;
-						chrom_nbr = it->first;
 					}
 			}
 			
 			
-			//right chromo
-			if(line.compare(chrom_nbr) == 0)
+			//header chromo name
+			if(line[0] == '>')
 			{
-				in_chromo = true;
-				//set start_seq index
-				pos_0 = (genome_input.tellg());
+				//if one file
+				if(one_file)
+					{
+						while((">chr" + std::to_string(it->first)) != line)
+						{ ++it; }
+					}
+				
+				//if right chromo	
+				if(line.compare(">chr" + std::to_string(it->first)) == 0)
+				{
+					in_chromo = true;
+					pos_0 = (genome_input.tellg());
+				}
 			}
 			
 		}
 		
-		//
+		if(one_file) { break; }
+		
 		if(!one_file)
 			{
 				//last range
@@ -256,11 +264,10 @@ void Genome_analyser::reader_2(bool one_file, std::string file)
 						in_chromo = false;
 					}	
 					
-					//right chromo
-					if(line.compare(">chr" + chrom_nbr) == 0)
+						//if right chromo	
+					if(line.compare(">chr" + std::to_string(it->first)) == 0)
 					{
 						in_chromo = true;
-						//set start_seq index
 						pos_0 = (genome_input.tellg());
 					}
 			}
@@ -345,7 +352,7 @@ bool Genome_analyser::sortPosition (std::vector<Position>& pos, Position newPos)
 		if (newPos.start < it->start) {
 			pos.insert(it, 1, newPos);
 			return true;
-		} else ++i;
+		} else ++it;
 	}
 	return false;
 }
