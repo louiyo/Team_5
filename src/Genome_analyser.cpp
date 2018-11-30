@@ -181,6 +181,7 @@ void Genome_analyser::cut_positions(const Range& range, std::ifstream& genome_in
 			revert_seq();
 			current_seq.count_nucleotides(size);
 			seq = "";
+			++total_seq_nb;
 		}
 		else
 		{
@@ -188,6 +189,7 @@ void Genome_analyser::cut_positions(const Range& range, std::ifstream& genome_in
 			current_seq.set_sequence(seq);
 			current_seq.count_nucleotides(size);
 			seq = "";
+			++total_seq_nb;
 		}
 	}
 	

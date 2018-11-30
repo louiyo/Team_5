@@ -105,7 +105,7 @@ private :
     size_t seq_size; //longueur de la séquence à couper
 
     Positions positions;        //tableau des positions à aller chercher dans le génome
-    int nb_of_sequences_to_analyze;
+    int total_seq_nb;
     
 };
 
