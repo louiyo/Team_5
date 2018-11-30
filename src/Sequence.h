@@ -79,7 +79,7 @@ private:
     std::string sequence_;
     std::string myfilename;
     vector< array<double,4>> matrix_ ;
-    double compteur_seq;
+    double compteur_seq; //initialiser à 1
 };
 
 #endif

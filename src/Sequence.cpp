@@ -156,9 +156,10 @@ vector< array<double,4>> Sequence::get_matrix() const
 
 void count_nucleotides(size_t taille)
 {
-	int nbdecoupe((sequence_.size()-taille)+1); // Indique le nb de sequence possible si la taille de la sequence est differente de la taille demandee
+	//Si la séquence extrait est plus petite que la taille demandée on la complete avec des nucleotides N
+	while(sequence_.size()<taille){sequence_+=N;}
 	
-	if(sequence_.size()<taille){throw std::invalid_argument("sequence trop petite");}//VERIFIER le type d'erreur
+	int nbdecoupe((sequence_.size()-taille)+1); // Indique le nb de sequence possible si la taille de la sequence est differente de la taille demandee
 	
 	if(sequence_.size()>taille){
 		for(int i(0);i<nbdecoupe;++i){
@@ -172,9 +173,9 @@ void count_nucleotides(size_t taille)
 	
 void rempli_matrice(string seq, double nbdecoupes) 
 {
-	for (size_t i(0) ; i < sequence_.size() ; ++i)
+	for (size_t i(0) ; i < seq.size() ; ++i)
 	{
-		switch(sequence_[i]) {
+		switch(seq[i]) {
 			case ('a') :
 			case ('A') : matrix_[i][0]+=(1/(nbdecoupes));
 						break;
@@ -201,16 +202,17 @@ void rempli_matrice(string seq, double nbdecoupes)
 }
 
 
-/*
+
 void matrice_en_freq()
-{
-	//Faire un trow si compteurseq=0
-	//compteur_seq  est un compteur de genome analyzer ou sequence qui compte le nombrede seq extraites
-	for(auto& ligne: matrix_){
-		for(auto& element: ligne){
-			element/= compteur_seq;} // ATTENTION compteur seq doit etre un double et verifer qu'il soit non nul
-	}
+{	
+	//Bien initialiser le compteur à +1 car matrice commence avec 1/4
 	
+	//compteur_seq  est un compteur de seq et compte le nombrede seq extraites
+	//Le nb de sequences sont des int, mais compteur seq en double pour la division
+	if(compteur_seq>1){ //verifie qu'on a au moins extrait une sequence
+	for(auto& ligne: matrix_){
+		for(auto& element: ligne){element/= compteur_seq;}
+	}
+	}
 }
 
-*/
