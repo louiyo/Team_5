@@ -66,7 +66,38 @@ void Genome_analyser::revert_seq()
 	current_seq.set_sequence(reverse);
 }
 
+std::string Genome_analyser::revert_seq()
+{
+	std::string reverse;
+	std::string seq(current_seq.get_sequence());
+	
+	for(int i(seq.size()-1);i>=0;--i)
+	{
+		switch(seq[i]) {
+			case ('a') :
+			case ('A') : reverse+="T";
+						break;
 
+			case ('c') :
+			case ('C') : reverse+="G";
+						break;
+
+			case ('g') :
+			case ('G') : reverse+="C";
+						break;
+
+			case ('t') :
+			case ('T') : reverse+="A";
+						break;
+			
+			case ('n') :
+			case ('N') : reverse+='N';
+						break;
+			
+					}
+				}
+	return reverse;
+}
 std::string Genome_analyser::get_seq() const
 {
 	return current_seq.get_sequence();
@@ -107,7 +138,6 @@ void Genome_analyser::reader_1(std::string file)
     std::string chromo_seq, line, last;
 
         if(!file_input.eof()) {
-		size_t counter (0);
 		
             while(std::getline(file_input, line)) {
 
@@ -121,11 +151,15 @@ void Genome_analyser::reader_1(std::string file)
 
                 } else {
 
-                    counter += 1;
                     chromo_seq = last;
                     chromo_seq += line;
                     current_pos_in_line = 0;
-
+					
+					if((chromo_seq.size() < length))
+						{
+							last = chromo_seq;
+						}
+					
                     if(chromo_seq.size() >= seq_size) {
 
                         last = line.substr(line.size()-seq_size + 1, seq_size);
@@ -153,12 +187,13 @@ void Genome_analyser::reader_1(std::string file)
 }
 
 
-//regroupe toutes les séquences d'intérêt dans un chromosome donné et les ajoute a la matrice
-void Genome_analyser::cut_positions(const Range& range, std::ifstream& genome_input, size_t pos_0, size_t size)
+//regroupe toutes les séquences d'intérêt dans un chromosome donné
+std::vector<Sequence> Genome_analyser::cut_positions(const Range& range, std::ifstream& genome_input, size_t pos_0, size_t size)
 {
 	//local variables
 	std::string seq;
 	char c;
+	std::vector<Sequence> seqs;
 	
 	//goes through different positions in chromosome
 	for(auto struc : range)
@@ -174,26 +209,32 @@ void Genome_analyser::cut_positions(const Range& range, std::ifstream& genome_in
 				seq += c;
 
 			}
-		if(!struc.forward)
-		{
-			//add to matrix
-			current_seq.set_sequence(seq);
-			revert_seq();
-			current_seq.count_nucleotides(size);
-			seq = "";
-			++total_seq_nb;
-		}
-		else
-		{
-			//add to matrix
-			current_seq.set_sequence(seq);
-			current_seq.count_nucleotides(size);
-			seq = "";
-			++total_seq_nb;
-		}
+		
+		seqs.push_back(seq);	
+		seq = "";
+		++total_seq_nb;
 	}
 	
+	return seqs;
+	
 }
+ //ajoute les séquences extraites a la matrice
+void Genome_analyser::add_to_matrix(std::vector<Sequence> s)
+	{
+		for(auto struc : s)
+			{
+				current_seq.set_sequence(seq);
+				if(!struc.forward)
+				{
+					revert_seq();
+					current_seq.count_nucleotides(size);
+				}
+				else
+				{
+					current_seq.count_nucleotides(size);
+				}
+			}
+	}
 
 void Genome_analyser::reader_2(bool one_file, std::string file)
 {
@@ -218,16 +259,15 @@ void Genome_analyser::reader_2(bool one_file, std::string file)
 			//if we are in the chromosome of interest
 			if(in_chromo)
 			{
-				cut_positions(it->second, genome_input, pos_0, seq_size);
-				//initialize iterator on map element
+				add_to_matrix(cut_positions(it->second, genome_input, pos_0, seq_size));
+				
+				in_chromo = false;
 				
 				//if one file, goes to the end of positions
 				if(one_file)
-					{ it = positions.end();
-						in_chromo = false; }
+					{ it = positions.end();}
 				else
 					{
-						in_chromo = false;
 						++ it;
 					}
 			}
@@ -262,7 +302,7 @@ void Genome_analyser::reader_2(bool one_file, std::string file)
 				//if we are in the chromosome of interest
 					if(in_chromo)
 					{
-						cut_positions(it->second, genome_input, pos_0, seq_size);
+						add_to_matrix(cut_positions(it->second, genome_input, pos_0, seq_size));
 						in_chromo = false;
 					}	
 					
