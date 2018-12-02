@@ -19,7 +19,7 @@ if (DOXYGEN_FOUND)
           COMMENT "Generating API documentation with Doxygen" VERBATIM)
 endif(DOXYGEN_FOUND)
 
-add_executable(Team_5 src/main.cpp src/Genome_analyser.cpp src/Sequence.cpp)
+add_executable(Team_5 src/main.cpp src/Genome_analyser.cpp src/Sequence.cpp src/Builder.cpp src/Builder.h src/BedBuilder.cpp src/BedBuilder.h src/MatrixBuilder.cpp src/MatrixBuilder.h)
 
 if (test)
   enable_testing()
@@ -32,7 +32,7 @@ if (test)
   
 include_directories(${GTEST_INCLUDE_DIRS} ${CMAKE_SOURCE_DIR}/src)
 
-add_executable(tests src/Genome_analyser.cpp src/Sequence.cpp src/test_main.cpp)
+add_executable(tests src/Genome_analyser.cpp src/Sequence.cpp src/test_main.cpp src/Builder.cpp src/Builder.h src/BedBuilder.cpp src/BedBuilder.h src/MatrixBuilder.cpp src/MatrixBuilder.h)
 target_link_libraries(tests ${GTEST_BOTH_LIBRARIES} pthread)
 add_test(Team_5 tests)
 
