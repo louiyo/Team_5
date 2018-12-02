@@ -2,11 +2,19 @@
 #define MATRIXBUILDER
 
 #include "Builder.h"
+#include <string>
 
 struct Position {
     size_t start;
     size_t end;
     bool forward;
+};
+
+// j'e ai besoin pour ma focntion cut position mais ça fait de la répet par rapport a la structure d'au dessus. d'autres idées ?
+struct Seq {
+	std::string seq;
+	bool forward;
+	
 };
 
 typedef std::vector<Position> Range;
@@ -48,7 +56,7 @@ public:
      *
      * @return
      */
-    std::vector<Sequence> cut_positions(const Range& range, std::ifstream& genome_input, size_t pos_0, size_t size);
+    std::vector<Seq> cut_positions(const Range& range, std::ifstream& genome_input, size_t pos_0, size_t size);
 
     /**
      * @brief

@@ -66,38 +66,6 @@ void Genome_analyser::revert_seq()
 	current_seq.set_sequence(reverse);
 }
 
-std::string Genome_analyser::revert_seq()
-{
-	std::string reverse;
-	std::string seq(current_seq.get_sequence());
-	
-	for(int i(seq.size()-1);i>=0;--i)
-	{
-		switch(seq[i]) {
-			case ('a') :
-			case ('A') : reverse+="T";
-						break;
-
-			case ('c') :
-			case ('C') : reverse+="G";
-						break;
-
-			case ('g') :
-			case ('G') : reverse+="C";
-						break;
-
-			case ('t') :
-			case ('T') : reverse+="A";
-						break;
-			
-			case ('n') :
-			case ('N') : reverse+='N';
-						break;
-			
-					}
-				}
-	return reverse;
-}
 std::string Genome_analyser::get_seq() const
 {
 	return current_seq.get_sequence();
@@ -155,6 +123,7 @@ void Genome_analyser::reader_1(std::string file)
                     chromo_seq += line;
                     current_pos_in_line = 0;
 					
+					// au cas ou la ligne est plus petite que la taille à extraire
 					if((chromo_seq.size() < length))
 						{
 							last = chromo_seq;
@@ -168,6 +137,7 @@ void Genome_analyser::reader_1(std::string file)
 
                             extract_seq(chromo_seq, seq_size);
 
+							//on pourrait pas revenir a une seule fonction score comme avant ? parce que ça fait de la repet de code, nn?
 							if(current_seq.score_fow() > threshold) {
 								writer(file_output);
 							}
@@ -188,17 +158,17 @@ void Genome_analyser::reader_1(std::string file)
 
 
 //regroupe toutes les séquences d'intérêt dans un chromosome donné
-std::vector<Sequence> Genome_analyser::cut_positions(const Range& range, std::ifstream& genome_input, size_t pos_0, size_t size)
+std::vector<Seq> Genome_analyser::cut_positions(const Range& range, std::ifstream& genome_input, size_t pos_0)
 {
-	//local variables
+	//variables locales
 	std::string seq;
 	char c;
-	std::vector<Sequence> seqs;
+	std::vector<Seq> seqs;
 	
-	//goes through different positions in chromosome
+	//parcourt un tableau de position pour un chr donné
 	for(auto struc : range)
 	{
-		//extract sequence of interest char per char
+		//extracts sequence of interest char per char a partir de la position 0 (relative à une ligend e chr)+ start
 		size_t start_seq(pos_0 + struc.start);
 		genome_input.seekg(start_seq);
 		for(size_t i(struc.start); i < struc.end; ++i)
@@ -210,8 +180,11 @@ std::vector<Sequence> Genome_analyser::cut_positions(const Range& range, std::if
 
 			}
 		
+		//push_back dans le tableau
 		seqs.push_back(seq);	
 		seq = "";
+		
+		//incrémente le nb total de séquences analysees (pour diviser ensuite   la matrrrice aveccccccc)
 		++total_seq_nb;
 	}
 	
@@ -219,7 +192,7 @@ std::vector<Sequence> Genome_analyser::cut_positions(const Range& range, std::if
 	
 }
  //ajoute les séquences extraites a la matrice
-void Genome_analyser::add_to_matrix(std::vector<Sequence> s)
+void Genome_analyser::add_to_matrix(std::vector<Seq> s)
 	{
 		for(auto struc : s)
 			{
@@ -227,16 +200,16 @@ void Genome_analyser::add_to_matrix(std::vector<Sequence> s)
 				if(!struc.forward)
 				{
 					revert_seq();
-					current_seq.count_nucleotides(size);
+					current_seq.count_nucleotides(seq_size);
 				}
 				else
 				{
-					current_seq.count_nucleotides(size);
+					current_seq.count_nucleotides(seq_size);
 				}
 			}
 	}
 
-void Genome_analyser::reader_2(bool one_file, std::string file)
+void Genome_analyser::reader_2(bool one_per_file, std::string file)
 {
     std::ifstream genome_input(file.c_str());
     std::ofstream file_output("output_file_Matrix.txt");
@@ -245,27 +218,29 @@ void Genome_analyser::reader_2(bool one_file, std::string file)
     bool in_chromo(false);
     size_t pos_0(0);
     
-    //goes through positions map
+    //iterator : accès aux elemnets de la map
     Positions::iterator it(positions.begin());
   
     
-    //while it isn't at the end of positions
+    //tant que c'est pas la fin du fichier
     while(!genome_input.eof())
     {
+		//tant que c'est pas la fin de la map
 		while(it != positions.end())
 		{
 			std::getline(genome_input, line);
 			
-			//if we are in the chromosome of interest
+			//si on est dans le chromo qui nous intéresse
 			if(in_chromo)
 			{
-				add_to_matrix(cut_positions(it->second, genome_input, pos_0, seq_size));
+				add_to_matrix(cut_positions(it->second, genome_input, pos_0));
 				
 				in_chromo = false;
 				
-				//if one file, goes to the end of positions
-				if(one_file)
+				//if one chromo per file, goes to the end of positions ( pour sortir de la premiere boulce => pas pppropre)
+				if(one_per_file)
 					{ it = positions.end();}
+				
 				else
 					{
 						++ it;
@@ -276,33 +251,36 @@ void Genome_analyser::reader_2(bool one_file, std::string file)
 			//header chromo name
 			if(line[0] == '>')
 			{
-				//if one file
-				if(one_file)
+				//if one chromo per file
+				if(one_per_file)
 					{
+						//on cherche l'iterateur qui correspond => pas propre non plus, une autre idée ?
 						while((">chr" + std::to_string(it->first)) != line)
 						{ ++it; }
 					}
 				
-				//if right chromo	
+				//si c'est lebon chromo => test de type, pas beau non plus, mais pas d'autre idée	
 				if(line.compare(">chr" + std::to_string(it->first)) == 0)
 				{
 					in_chromo = true;
+					//initialise la position 0 (début d'un chromosome au nucléotide 0)
 					pos_0 = (genome_input.tellg());
 				}
 			}
 			
 		}
 		
-		if(one_file) { break; }
+		//sort de la boucle while mais pas propre
+		if(one_per_file) { break; }
 		
-		if(!one_file)
+		if(!one_per_file)
 			{
-				//last range
+				//dernier itérateur a prendre
 				std::getline(genome_input, line);
 				//if we are in the chromosome of interest
 					if(in_chromo)
 					{
-						add_to_matrix(cut_positions(it->second, genome_input, pos_0, seq_size));
+						add_to_matrix(cut_positions(it->second, genome_input, pos_0));
 						in_chromo = false;
 					}	
 					

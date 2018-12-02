@@ -17,7 +17,7 @@ struct Position
 	bool forward;
 };
 
-struct Sequence
+struct Seq
 {
 	std::string seq;
 	bool forward;
@@ -53,9 +53,11 @@ public:
      */
     void reader_1 (std::string file);
     
+    //input 2
     void reader_2 (bool one_file, std::string file); // extrait les séquences dans le génome a partir de positions données (via la multimap)
-    std::vector<Sequence> cut_positions(const Range& range, std::ifstream& genome_input, size_t pos_0, size_t size);
-    void add_to_matrix(std::vector<Sequence> s);
+    std::vector<Seq> cut_positions(const Range& range, std::ifstream& genome_input, size_t pos_0); //coupe toutes les séquences données sur un chrom et les met avec leur signe dans un vecteur
+    void add_to_matrix(std::vector<Seq> s); //ecrit dans la matrice les séquences extraites
+	
 	void ConstructPositions (const std::string & file);
     
     
@@ -79,7 +81,6 @@ public:
 	 * @param length (un int) : la longueur des séquences à découper
 	 */
 	 
-	std::string Genome_analyser::revert_seq();
     void extract_seq (std::string chromoseq, int length);
 
     /*
