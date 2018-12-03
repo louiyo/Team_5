@@ -40,22 +40,15 @@ EXPECT_EQ(analyser.get_seq(),"TTNCCAT");
 }
 
 Range range = {{1,4,true},{4,7, false}};
-std::vector<Sequence> seq; //idem
-std::vector<Sequence> test_seq = {{"NNG", true},{"CTA", false}};
+std::vector<Seq> seq; //idem
+std::vector<Seq> test_seq = {{"NNG", true},{"CTA", false}};
 
 //Genome_analyser analyser_2 nouveau constructeur
 TEST(Genome_analyser, reading) {
 	
-	std::ifstream gen("test.fa");
-	//tester le output file d'abord
-	analyser.reader_1();
-	//EXPECT_TRUE(reader("output_file.txt", "test_out.txt"));
-	
 	seq = analyser.cut_positions(range, gen, 5); 
 	EXPECT_EQ(seq, test_seq);
 	
-	//analyser.reader_2();
-	//EXPECT_TRUE(); //a completer
 }
 
 Sequence seq("DBP.mat");
