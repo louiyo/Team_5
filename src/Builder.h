@@ -8,6 +8,8 @@
 #include <vector>
 #include <string>
 
+class BedBuilder;
+
 class Builder {
 
 public:
@@ -15,8 +17,9 @@ public:
     /**
      * @brief constructeur (sans arguments, la current_seq est laissée vide)
      */
-    Builder();
+    Builder(const std::string & matrix_file);
 
+	Builder(const size_t& size);
     /**
      * @brief Génère la séquence complémentaire à une séquence donnée
      *
@@ -24,7 +27,7 @@ public:
      *
      * @return la séquence complémentaire à seq
      */
-    std::string revert_seq (std::string seq);
+    std::string revert_seq ();
 
     /**
      * @brief getteur des nucléotides de la current_seq
@@ -37,8 +40,10 @@ public:
      * @brief Reader de fichiers virtuel, qui sera adapté (défini) dans chaque sous-classe Builder
      */
     virtual void reader(const std::string & file) = 0;
+    
 
-private:
+
+protected:
 
     Sequence current_seq;
     size_t seq_size;

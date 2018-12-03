@@ -1,5 +1,5 @@
-#ifndef BEDBUILDER
-#define BEDBUILDER
+#ifndef BEDBUILDER_H
+#define BEDBUILDER_H
 
 #include "Builder.h"
 
@@ -20,7 +20,7 @@ public:
      *
      * @param file (un std::string) : le nom du fichier du génome
      */
-    void reader(const std::string & file) override;
+    virtual void reader(const std::string & file) override;
 
     /**
 	 * @brief Extrait séquence par séquence à partir d'un brin entier d'ADN (en changeant current_seq et les positions liées)
@@ -36,14 +36,14 @@ public:
      * @param output (un std::ofstream) : le fichier de sortie dans lequel on écrit
      * @param forward (un bool) indiquant le sens de lecture de la séquence (dans le sens + par défaut)
      */
-    void writer (std::ofstream & output, bool forward=true) const;
+    void writer(std::ofstream & output, bool forward=true) const;
 
 private:
 
     double threshold;
     size_t current_pos_in_chr;
     size_t current_pos_in_line;
-
+	string chromosome_number;
 };
 
 

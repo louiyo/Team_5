@@ -16,9 +16,16 @@ struct Position
 	size_t end;
 	bool forward;
 };
+/*
+struct Sequence
+{
+	std::string seq;
+	bool forward;
+};
+*/
 
 typedef std::vector<Position> Range;
-typedef std::map <size_t, Range > Positions;
+typedef std::map <size_t, std::vector<Position> > Positions;
 
 
 class Genome_analyser {
@@ -31,7 +38,7 @@ public:
      * @param matrix_file (un std::string) : le nom du fichier qui contient la matrice
      * @param thrs (un double) : le seuil de validité du score d'une séquence
      */
-	Genome_analyser (const std::string & matrix_file, const double & thrs);
+	Genome_analyser (const string& file_in,const std::string & matrix_file, const double & thrs);
 
 	/*
 	 * @brief constructeur (input 2)
@@ -45,13 +52,11 @@ public:
     /*
      * @brief Extrait séquence par séquence à partir de la séquence chromosomique entière
      */
-    void reader_1 (std::string file);
+    void reader_1 ();
     
-    //input 2
     void reader_2 (bool one_file, std::string file); // extrait les séquences dans le génome a partir de positions données (via la multimap)
-   std::string cut_positions(const Position& pos, std::ifstream& genome_input, size_t pos_0);
-    void add_to_matrix(const Position& struc, std::string s);
-	
+    std::vector<Sequence> cut_positions(const Range& range, std::ifstream& genome_input, size_t pos_0, size_t size);
+    void add_to_matrix(std::vector<Sequence> s);
 	void ConstructPositions (const std::string & file);
     
     
@@ -66,7 +71,7 @@ public:
      *
      * @return la séquence complémentaire à seq (de même direction 5'-3')
      */
-	void revert_seq ();
+	void revert_current_seq ();
 
 	/*
 	 * @brief extrait séquence par séquence à partir d'un brin entier d'ADN (en changeant current_seq et les positions liées)
@@ -74,8 +79,8 @@ public:
 	 * @param chromoseq (un std::string) : la séquence de chromosome à découper
 	 * @param length (un int) : la longueur des séquences à découper
 	 */
-	 
-    void extract_seq (std::string chromoseq, int length, size_t& current_line);
+	std::string revert_seq();
+    void extract_seq (std::string chromoseq, int length);
 
     /*
      * @brief Ecrit dans le fichier de sortie les infos relatives à une séquence à afficher
@@ -102,12 +107,13 @@ public:
 
 private :
 	
-	Sequence current_seq;
+    Sequence current_seq;
     double threshold;
     std::string chromosome_number;
     size_t current_pos_in_chr; //position courante dans la séquence chromosomique
+    size_t current_pos_in_line;
     size_t seq_size; //longueur de la séquence à couper
-
+	string file_in;
     Positions positions;        //tableau des positions à aller chercher dans le génome
     int total_seq_nb;
     

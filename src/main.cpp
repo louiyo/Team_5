@@ -1,6 +1,7 @@
 #include <tclap/CmdLine.h>
 #include <string>
-#include "Genome_analyser.h"
+#include "BedBuilder.h"
+#include "MatrixBuilder.h"
 
 
 using namespace TCLAP; 
@@ -11,24 +12,27 @@ int main(int argc, char **argv) {
 	ValueArg< std::string > argNameofGenome("G", "Genome", "Enter the name of the file that contains your genome of interest",  true, "NoName", "string"); 
     cmd.add(argNameofGenome);
     
+    ValueArg< std::string > argListofPos("L", "List", "Enter the name of the file that contains your list of position",  true, "NoName", "string"); 
+    cmd.add(argListofPos);
+    
+    ValueArg< size_t > argSize("s", "size", "Enter the size of sequence of interest to build matrice",  true, 0, "size_t"); 
+    cmd.add(argSize);
+    
+    
+    /* POUR LA PARTIE 1 
     ValueArg< std::string > argMatrice ("M", "Matrice", "Enter the name of the file that contains your matrice of interest", true, "NoName", "string"); 
     cmd.add(argMatrice); 
     
     ValueArg< double > argSeuil("S", "Seuil", "Enter the seuil of likelihood tolerance (double)", false, 10.0, "double"); 
     cmd.add(argSeuil);
     
-    /*
-    ValueArg<int> argFirstPos("F","FirstPos", "Enter the first position in your genome to create a matrice", true, "int");
-    cmd.add(argFirstPos);
-    
-    ValueArg<int> argLastPos( "L", "LastPos", "Enter the last position in your genome to create a matrice", true, "int");
-    cmd.add(argLastPos);
-    
-    */
+*/
     
 cmd.parse(argc, argv);
 
-Genome_analyser Analyser (argNameofGenome.getValue(), argMatrice.getValue(), argSeuil.getValue());
-Analyser.reader();
+MatrixBuilder Analyser(argSize.getValue(), argListofPos.getValue());
+Analyser.reader(argNameofGenome.getValue());
+//BedBuilder Analyser (argMatrice.getValue(), argSeuil.getValue());
+//Analyser.reader(argNameofGenome.getValue());
  
 }

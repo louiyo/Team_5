@@ -119,16 +119,7 @@ void Sequence::ConstructMatrix (){
 }
 
 
-void Sequence::write_matrix(std::ofstream& output) const
-{
-	if(output.is_open()){
-		for (size_t i(0); i< matrix_size(); i++){
-			for (size_t j(0); j<4 ; j++){
-			output >> matrix_ [i][j]<< "    ";
-			} outp>> endl;
-		}
-	}
-}
+
 
 
 int Sequence::get_size() const
@@ -154,16 +145,44 @@ vector< array<double,4>> Sequence::get_matrix() const
 }
 
 
-void count_nucleotides(size_t taille)
+
+
+
+void Sequence::write_matrix(std::ofstream& output, double compteur_seq) 
+{
+	
+	if(compteur_seq>1){ //verifie qu'on a au moins extrait une sequence
+	for(auto& ligne: matrix_){
+		for(auto& element: ligne){element/= compteur_seq;}
+	}
+	}
+	if(output.is_open()){
+		for (size_t i(0); i< matrix_.size(); i++){
+			for (size_t j(0); j<4 ; j++){
+			output <<matrix_[i][j]<< "    ";
+			} output<<endl;
+		}
+	}
+}
+
+
+
+
+
+void Sequence::count_nucleotides(size_t taille)
 {
 	//Si la séquence extrait est plus petite que la taille demandée on la complete avec des nucleotides N
-	while(sequence_.size()<taille){sequence_+=N;}
+	while(sequence_.size()<taille){
+		sequence_+="N";
+		}
 	
 	int nbdecoupe((sequence_.size()-taille)+1); // Indique le nb de sequence possible si la taille de la sequence est differente de la taille demandee
 	
 	if(sequence_.size()>taille){
 		for(int i(0);i<nbdecoupe;++i){
-		rempli_matrice(sequence_.substr(i,taille),nbdecoupe);}
+			
+		rempli_matrice(sequence_.substr(i,taille),nbdecoupe);
+		}
 	}	
 	
 	else { rempli_matrice(sequence_,nbdecoupe);}
@@ -171,7 +190,7 @@ void count_nucleotides(size_t taille)
 
 
 	
-void rempli_matrice(string seq, double nbdecoupes) 
+void Sequence::rempli_matrice(string seq, double nbdecoupes) 
 {
 	for (size_t i(0) ; i < seq.size() ; ++i)
 	{
@@ -195,7 +214,7 @@ void rempli_matrice(string seq, double nbdecoupes)
 			case ('n') :
 			case ('N') : break;
 
-			default : /*throw std::runtime_error("NUCLEOTIDE");*/ break; //A VOIR LORS DE LA GESTION D'ERREUR
+			default : throw std::runtime_error("NUCLEOTIDE"); break; //A VOIR LORS DE LA GESTION D'ERREUR
 		}
 	}
 
@@ -203,16 +222,5 @@ void rempli_matrice(string seq, double nbdecoupes)
 
 
 
-void matrice_en_freq()
-{	
-	//Bien initialiser le compteur à +1 car matrice commence avec 1/4
-	
-	//compteur_seq  est un compteur de seq et compte le nombrede seq extraites
-	//Le nb de sequences sont des int, mais compteur seq en double pour la division
-	if(compteur_seq>1){ //verifie qu'on a au moins extrait une sequence
-	for(auto& ligne: matrix_){
-		for(auto& element: ligne){element/= compteur_seq;}
-	}
-	}
-}
+
 

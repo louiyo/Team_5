@@ -2,24 +2,22 @@
 #define MATRIXBUILDER
 
 #include "Builder.h"
-#include <string>
+#include <sstream> 
+#include <fstream> 
+#include <algorithm>
 
 struct Position {
     size_t start;
     size_t end;
     bool forward;
+    string seq;
 };
 
-// j'e ai besoin pour ma focntion cut position mais ça fait de la répet par rapport a la structure d'au dessus. d'autres idées ?
-struct Seq {
-	std::string seq;
-	bool forward;
-	
-};
+
 
 typedef std::vector<Position> Range;
 
-typedef std::map <size_t, std::vector<Position> > Positions;
+typedef std::map <string, Range > Positions;
 
 class MatrixBuilder : public Builder  {
 
@@ -39,12 +37,12 @@ public:
      * @param one_file
      * @param file
      */
-    void reader (const std::string & file) override;
+    virtual  void reader (const std::string & file) override;
 
     /**
      * @brief Change la current_seq par la séquence qui lui est complémentaire
      */
-    void change_to_reverse ();
+    void revert_current_seq ();
 
     /**
      * @brief
@@ -56,7 +54,7 @@ public:
      *
      * @return
      */
-    std::vector<Seq> cut_positions(const Range& range, std::ifstream& genome_input, size_t pos_0, size_t size);
+   std::string cut_positions(const Position& struc, std::ifstream& genome_input, size_t pos_0);
 
     /**
      * @brief
@@ -72,7 +70,7 @@ public:
      *
      * @return
      */
-    bool chromoAlreadyMapped(size_t chromo) const;
+    bool chromoAlreadyMapped(string chromo) const;
 
     /**
      * @brief
@@ -83,11 +81,13 @@ public:
      * @return
      */
     bool sortPosition (std::vector<Position>& pos, Position newPos);
+    
+   void add_to_matrix(const Position& struc, std::string seq);
 
 private:
 
     Positions positions; //tableau des positions à aller chercher dans le génome
-    int total_seq_nb; //nombre de séquences d'intérêt ayant été analysées
+    double total_seq_nb; //nombre de séquences d'intérêt ayant été analysées
 
 };
 

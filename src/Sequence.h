@@ -71,6 +71,9 @@ public:
     void rempli_matrice( string seq, double nbdecoupes);
     //Compte le nb de sequence du fichier bed
     void matrice_en_freq();
+    
+    //Ecrit la matrice 
+    void write_matrix(std::ofstream& output, double compteur_seq);
 
 
 private:
@@ -79,7 +82,7 @@ private:
     std::string sequence_;
     std::string myfilename;
     vector< array<double,4>> matrix_ ;
-    double compteur_seq; //initialiser à 1
+    
 };
 
 #endif
