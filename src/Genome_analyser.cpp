@@ -168,7 +168,7 @@ std::vector<Seq> Genome_analyser::cut_positions(const Range& range, std::ifstrea
 	//parcourt un tableau de position pour un chr donné
 	for(auto struc : range)
 	{
-		//extracts sequence of interest char per char a partir de la position 0 (relative à une ligend e chr)+ start
+		//extracts sequence of interest char per char a partir de la position 0 (relative à une ligne de chr)+ start
 		size_t start_seq(pos_0 + struc.start);
 		genome_input.seekg(start_seq);
 		for(size_t i(struc.start); i < struc.end; ++i)
@@ -217,82 +217,32 @@ void Genome_analyser::reader_2(bool one_per_file, std::string file)
     std::string line;
     bool in_chromo(false);
     size_t pos_0(0);
-    
-    //iterator : accès aux elemnets de la map
-    Positions::iterator it(positions.begin());
-  
+    Range value;
     
     //tant que c'est pas la fin du fichier
     while(!genome_input.eof())
     {
-		//tant que c'est pas la fin de la map
-		while(it != positions.end())
-		{
 			std::getline(genome_input, line);
 			
 			//si on est dans le chromo qui nous intéresse
 			if(in_chromo)
 			{
-				add_to_matrix(cut_positions(it->second, genome_input, pos_0));
-				
+				add_to_matrix(cut_positions(value, genome_input, pos_0));
 				in_chromo = false;
-				
-				//if one chromo per file, goes to the end of positions ( pour sortir de la premiere boulce => pas pppropre)
-				if(one_per_file)
-					{ it = positions.end();}
-				
-				else
-					{
-						++ it;
-					}
 			}
 			
 			
 			//header chromo name
 			if(line[0] == '>')
 			{
-				//if one chromo per file
-				if(one_per_file)
-					{
-						//on cherche l'iterateur qui correspond => pas propre non plus, une autre idée ?
-						while((">chr" + std::to_string(it->first)) != line)
-						{ ++it; }
-					}
-				
-				//si c'est lebon chromo => test de type, pas beau non plus, mais pas d'autre idée	
-				if(line.compare(">chr" + std::to_string(it->first)) == 0)
-				{
+					line.erase(0,1);
+					value = positions[line];
 					in_chromo = true;
 					//initialise la position 0 (début d'un chromosome au nucléotide 0)
 					pos_0 = (genome_input.tellg());
 				}
-			}
+	}
 			
-		}
-		
-		//sort de la boucle while mais pas propre
-		if(one_per_file) { break; }
-		
-		if(!one_per_file)
-			{
-				//dernier itérateur a prendre
-				std::getline(genome_input, line);
-				//if we are in the chromosome of interest
-					if(in_chromo)
-					{
-						add_to_matrix(cut_positions(it->second, genome_input, pos_0));
-						in_chromo = false;
-					}	
-					
-						//if right chromo	
-					if(line.compare(">chr" + std::to_string(it->first)) == 0)
-					{
-						in_chromo = true;
-						pos_0 = (genome_input.tellg());
-					}
-			}
-		
-		
 	}
 	
 	//ecrit la matrice
