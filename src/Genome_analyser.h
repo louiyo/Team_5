@@ -17,14 +17,8 @@ struct Position
 	bool forward;
 };
 
-struct Seq
-{
-	std::string seq;
-	bool forward;
-};
-
 typedef std::vector<Position> Range;
-typedef std::map <size_t, std::vector<Position> > Positions;
+typedef std::map <size_t, Range > Positions;
 
 
 class Genome_analyser {
@@ -55,8 +49,8 @@ public:
     
     //input 2
     void reader_2 (bool one_file, std::string file); // extrait les séquences dans le génome a partir de positions données (via la multimap)
-    std::vector<Seq> cut_positions(const Range& range, std::ifstream& genome_input, size_t pos_0); //coupe toutes les séquences données sur un chrom et les met avec leur signe dans un vecteur
-    void add_to_matrix(std::vector<Seq> s); //ecrit dans la matrice les séquences extraites
+   std::string cut_positions(const Position& pos, std::ifstream& genome_input, size_t pos_0);
+    void add_to_matrix(const Position& struc, std::string s);
 	
 	void ConstructPositions (const std::string & file);
     
@@ -81,7 +75,7 @@ public:
 	 * @param length (un int) : la longueur des séquences à découper
 	 */
 	 
-    void extract_seq (std::string chromoseq, int length);
+    void extract_seq (std::string chromoseq, int length, size_t& current_line);
 
     /*
      * @brief Ecrit dans le fichier de sortie les infos relatives à une séquence à afficher
@@ -112,7 +106,6 @@ private :
     double threshold;
     std::string chromosome_number;
     size_t current_pos_in_chr; //position courante dans la séquence chromosomique
-    size_t current_pos_in_line;
     size_t seq_size; //longueur de la séquence à couper
 
     Positions positions;        //tableau des positions à aller chercher dans le génome

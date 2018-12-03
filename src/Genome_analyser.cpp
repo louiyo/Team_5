@@ -158,17 +158,13 @@ void Genome_analyser::reader_1(std::string file)
 
 
 //regroupe toutes les séquences d'intérêt dans un chromosome donné
-std::vector<Seq> Genome_analyser::cut_positions(const Range& range, std::ifstream& genome_input, size_t pos_0)
+std::string Genome_analyser::cut_positions(const Position& struc, std::ifstream& genome_input, size_t pos_0)
 {
 	//variables locales
 	std::string seq;
 	char c;
-	std::vector<Seq> seqs;
 	
-	//parcourt un tableau de position pour un chr donné
-	for(auto struc : range)
-	{
-		//extracts sequence of interest char per char a partir de la position 0 (relative à une ligne de chr)+ start
+	//extracts sequence of interest char per char a partir de la position 0 (relative à une ligne de chr)+ start
 		size_t start_seq(pos_0 + struc.start);
 		genome_input.seekg(start_seq);
 		for(size_t i(struc.start); i < struc.end; ++i)
@@ -179,23 +175,15 @@ std::vector<Seq> Genome_analyser::cut_positions(const Range& range, std::ifstrea
 				seq += c;
 
 			}
-		
-		//push_back dans le tableau
-		seqs.push_back(seq);	
-		seq = "";
-		
 		//incrémente le nb total de séquences analysees (pour diviser ensuite   la matrrrice aveccccccc)
 		++total_seq_nb;
-	}
 	
-	return seqs;
+	return seq;
 	
 }
  //ajoute les séquences extraites a la matrice
-void Genome_analyser::add_to_matrix(std::vector<Seq> s)
+void Genome_analyser::add_to_matrix(const Position& struc, std::string s)
 	{
-		for(auto struc : s)
-			{
 				current_seq.set_sequence(seq);
 				if(!struc.forward)
 				{
@@ -206,7 +194,7 @@ void Genome_analyser::add_to_matrix(std::vector<Seq> s)
 				{
 					current_seq.count_nucleotides(seq_size);
 				}
-			}
+
 	}
 
 void Genome_analyser::reader_2(bool one_per_file, std::string file)
@@ -227,7 +215,10 @@ void Genome_analyser::reader_2(bool one_per_file, std::string file)
 			//si on est dans le chromo qui nous intéresse
 			if(in_chromo)
 			{
-				add_to_matrix(cut_positions(value, genome_input, pos_0));
+				for (auto struc : value )
+					{
+						add_to_matrix(struc, cut_positions(struc, genome_input, pos_0));
+					}
 				in_chromo = false;
 			}
 			
