@@ -129,7 +129,7 @@ void Genome_analyser::reader_1(std::string file)
 					
                     if(chromo_seq.size() >= seq_size) {
 
-                        last = line.substr(line.size()-seq_size + 1, seq_size);
+                        last = chromo_seq.substr(chromo_seq.size()-seq_size + 1, seq_size);
                         
                         while(current_pos_in_line <= (chromo_seq.size()- seq_size) ) {
 
