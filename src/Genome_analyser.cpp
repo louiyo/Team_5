@@ -72,13 +72,12 @@ std::string Genome_analyser::get_seq() const
 }
 
 
-void Genome_analyser::extract_seq(std::string chromoseq, int length)
+void Genome_analyser::extract_seq(std::string chromoseq, int length, size_t& current_line)
 {
 	if(chromoseq.size() >= (current_pos_in_line + length) )
 	{
 		current_seq.set_sequence (chromoseq.substr(current_pos_in_line,length)); 
-		current_pos_in_chr+=1;
-		current_pos_in_line +=1;
+		current_line +=1;
 	}
 }
 
@@ -104,8 +103,7 @@ void Genome_analyser::reader_1(std::string file)
     std::ofstream file_output("output_file.txt");
     
     std::string chromo_seq, line, last;
-
-        if(!file_input.eof()) {
+	size_t current_pos_in_line(0);
 		
             while(std::getline(file_input, line)) {
 
@@ -145,12 +143,14 @@ void Genome_analyser::reader_1(std::string file)
 
 							if(current_seq.score_rev() > threshold) {
 								writer(file_output, false);
+								
 							} 
+						
+						++current_pos_in_chr;
 						} 
 					}   
                 }
             } 
-        }
         //on ferme les fichiers
         file_input.close();
         file_output.close();
